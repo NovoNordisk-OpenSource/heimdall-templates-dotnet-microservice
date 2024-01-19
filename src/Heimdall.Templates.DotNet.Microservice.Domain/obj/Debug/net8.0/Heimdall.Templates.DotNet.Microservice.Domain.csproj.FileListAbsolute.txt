@@ -1,0 +1,13 @@
+C:\Users\tobia\source\repos\heimdall-templates-dotnet-microservice\src\Heimdall.Templates.DotNet.Microservice.Domain\bin\Debug\net8.0\Heimdall.Templates.DotNet.Microservice.Domain.deps.json
+C:\Users\tobia\source\repos\heimdall-templates-dotnet-microservice\src\Heimdall.Templates.DotNet.Microservice.Domain\bin\Debug\net8.0\Heimdall.Templates.DotNet.Microservice.Domain.dll
+C:\Users\tobia\source\repos\heimdall-templates-dotnet-microservice\src\Heimdall.Templates.DotNet.Microservice.Domain\bin\Debug\net8.0\Heimdall.Templates.DotNet.Microservice.Domain.pdb
+C:\Users\tobia\source\repos\heimdall-templates-dotnet-microservice\src\Heimdall.Templates.DotNet.Microservice.Domain\obj\Debug\net8.0\Heimdall.Templates.DotNet.Microservice.Domain.csproj.AssemblyReference.cache
+C:\Users\tobia\source\repos\heimdall-templates-dotnet-microservice\src\Heimdall.Templates.DotNet.Microservice.Domain\obj\Debug\net8.0\Heimdall.Templates.DotNet.Microservice.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\tobia\source\repos\heimdall-templates-dotnet-microservice\src\Heimdall.Templates.DotNet.Microservice.Domain\obj\Debug\net8.0\Heimdall.Templates.DotNet.Microservice.Domain.AssemblyInfoInputs.cache
+C:\Users\tobia\source\repos\heimdall-templates-dotnet-microservice\src\Heimdall.Templates.DotNet.Microservice.Domain\obj\Debug\net8.0\Heimdall.Templates.DotNet.Microservice.Domain.AssemblyInfo.cs
+C:\Users\tobia\source\repos\heimdall-templates-dotnet-microservice\src\Heimdall.Templates.DotNet.Microservice.Domain\obj\Debug\net8.0\Heimdall.Templates.DotNet.Microservice.Domain.csproj.CoreCompileInputs.cache
+C:\Users\tobia\source\repos\heimdall-templates-dotnet-microservice\src\Heimdall.Templates.DotNet.Microservice.Domain\obj\Debug\net8.0\Heimdall.Templates.DotNet.Microservice.Domain.sourcelink.json
+C:\Users\tobia\source\repos\heimdall-templates-dotnet-microservice\src\Heimdall.Templates.DotNet.Microservice.Domain\obj\Debug\net8.0\Heimdall.Templates.DotNet.Microservice.Domain.dll
+C:\Users\tobia\source\repos\heimdall-templates-dotnet-microservice\src\Heimdall.Templates.DotNet.Microservice.Domain\obj\Debug\net8.0\refint\Heimdall.Templates.DotNet.Microservice.Domain.dll
+C:\Users\tobia\source\repos\heimdall-templates-dotnet-microservice\src\Heimdall.Templates.DotNet.Microservice.Domain\obj\Debug\net8.0\Heimdall.Templates.DotNet.Microservice.Domain.pdb
+C:\Users\tobia\source\repos\heimdall-templates-dotnet-microservice\src\Heimdall.Templates.DotNet.Microservice.Domain\obj\Debug\net8.0\ref\Heimdall.Templates.DotNet.Microservice.Domain.dll
