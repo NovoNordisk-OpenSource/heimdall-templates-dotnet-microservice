@@ -1,10 +1,6 @@
 using BeHeroes.CodeOps.Abstractions.Services;
 using Heimdall.Templates.DotNet.Microservice.Domain.Aggregates;
 using Heimdall.Templates.DotNet.Microservice.Domain.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Microservice.Domain.Services
 {

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Heimdall.Templates.DotNet.Microservice.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+59baa4e28696208236166f010c075f18a454ce13")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b420aae5d2764559c4abc3ede0fc575a50fbe305")]
 [assembly: System.Reflection.AssemblyProductAttribute("Heimdall.Templates.DotNet.Microservice.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Heimdall.Templates.DotNet.Microservice.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

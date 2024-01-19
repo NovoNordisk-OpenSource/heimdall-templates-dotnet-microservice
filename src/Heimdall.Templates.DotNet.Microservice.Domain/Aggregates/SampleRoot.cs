@@ -30,22 +30,45 @@ namespace Heimdall.Templates.DotNet.Microservice.Domain.Aggregates
             _created = created;
         }
 
-        public void AddSampleItem(SampleItem sampleItem)
+        public ValueTask AddSampleItem(SampleItem sampleItem)
         {
             _sampleItems.Add(sampleItem);
+
+            var evt = new SampleItemAddedEvent(this, sampleItem);
+
+            AddDomainEvent(evt);
+
+            return ValueTask.CompletedTask;
         }
 
-        public void AddSampleItem(IEnumerable<SampleItem> sampleItem)
+        public ValueTask AddSampleItem(IEnumerable<SampleItem> sampleItem)
         {
-            _sampleItems.AddRange(sampleItem);
-        }
-
-        public void RemoveSampleItem(IEnumerable<SampleItem> sampleItems)
-        {
-            foreach (var item in sampleItems)
-            {
-                _sampleItems.Remove(item);
+            foreach(var item in sampleItem){
+                _sampleItems.Add(item);
             }
+
+            return ValueTask.CompletedTask;
+        }
+
+        public ValueTask RemoveSampleItem(SampleItem sampleItem)
+        {
+            _sampleItems.Remove(sampleItem);
+
+            var evt = new SampleItemRemovedEvent(this, sampleItem);
+
+            AddDomainEvent(evt);
+
+            return ValueTask.CompletedTask;
+        }
+
+        public ValueTask RemoveSampleItem(IEnumerable<SampleItem> sampleItem)
+        {
+            foreach (var item in sampleItem)
+            {
+                RemoveSampleItem(item);
+            }
+
+            return ValueTask.CompletedTask;
         }
 
         public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

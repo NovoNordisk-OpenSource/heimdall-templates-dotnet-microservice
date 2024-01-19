@@ -5,6 +5,6 @@ namespace Heimdall.Templates.DotNet.Microservice.Domain.Repositories
 {
     public interface ISampleRepository : IRepository<SampleRoot>
     {
-        Task<SampleRoot> GetAsync(Guid sampleItemId);
+        Task<SampleRoot> GetAsync(Guid sampleId);
     }
 }
