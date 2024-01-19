@@ -2,7 +2,7 @@ using BeHeroes.CodeOps.Abstractions.Services;
 using Heimdall.Templates.DotNet.Microservice.Domain.Aggregates;
 using Heimdall.Templates.DotNet.Microservice.Domain.ValueObjects;
 
-namespace Microservice.Domain.Services
+namespace Heimdall.Templates.DotNet.Microservice.Domain.Services
 {
     public interface ISampleService : IService
     {
