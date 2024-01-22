@@ -3,8 +3,8 @@ using Heimdall.Templates.DotNet.Microservice.Domain.Aggregates;
 
 namespace Heimdall.Templates.DotNet.Microservice.Domain.Repositories
 {
-    public interface ISampleRepository : IRepository<SampleRoot>
+    public interface IDomainEntityRepository : IRepository<DomainEntity>
     {
-        Task<SampleRoot> GetAsync(Guid sampleId);
+        Task<DomainEntity> GetAsync(Guid entityId, CancellationToken ct = default);
     }
 }

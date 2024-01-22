@@ -4,27 +4,20 @@ using System.Text.Json.Serialization;
 
 namespace Heimdall.Templates.DotNet.Microservice.Domain.ValueObjects
 {
-    public sealed class SampleItem : ValueObject
+    [method: JsonConstructor]
+    public sealed class DomainObject(string label, string value, string capabilityIdentifier) : ValueObject
     {
         [Required]
         [JsonPropertyName("label")]
-        public string Label { get; init; }
+        public string Label { get; init; } = label;
 
         [Required]
         [JsonPropertyName("value")]
-        public string Value { get; init; }
+        public string Value { get; init; } = value;
 
         [Required]
         [JsonPropertyName("capabilityIdentifier")]
-        public string CapabilityIdentifier { get; init; }
-
-        [JsonConstructor]
-        public SampleItem(string label, string value, string capabilityIdentifier)
-        {
-            Label = label;
-            Value = value;
-            CapabilityIdentifier = capabilityIdentifier;
-        }
+        public string CapabilityIdentifier { get; init; } = capabilityIdentifier;
 
         protected override IEnumerable<object> GetAtomicValues()
         {

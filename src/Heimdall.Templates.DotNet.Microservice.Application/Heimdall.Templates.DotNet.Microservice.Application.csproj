@@ -7,23 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BeHeroes.CodeOps.Infrastructure.EntityFramework" Version="1.0.0" />
-    <PackageReference Include="BeHeroes.CodeOps.Infrastructure.Kafka" Version="1.0.0" />
     <PackageReference Include="BeHeroes.CodeOps.Security.Policies" Version="1.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />    
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+		<PackageReference Include="Confluent.Kafka" Version="2.3.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Heimdall.Templates.DotNet.Microservice.Domain\Heimdall.Templates.DotNet.Microservice.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Data\Migrations\" />
   </ItemGroup>
 
 </Project>
