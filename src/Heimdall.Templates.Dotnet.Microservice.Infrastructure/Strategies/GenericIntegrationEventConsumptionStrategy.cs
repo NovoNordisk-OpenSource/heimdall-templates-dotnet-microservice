@@ -12,8 +12,7 @@ using System.Threading.Tasks;
 
 namespace Heimdall.Templates.Dotnet.Microservice.Infrastructure.Strategies
 {
-    //TODO: Fix typo in upstream dependency (ConsumtionStrategy) and push new package version with updated name
-    public sealed class GenericIntegrationEventConsumptionStrategy : ConsumtionStrategy
+    public sealed class GenericIntegrationEventConsumptionStrategy : ConsumptionStrategy
     {
         public GenericIntegrationEventConsumptionStrategy(IMapper mapper, IApplicationFacade applicationFacade) : base(mapper, applicationFacade)
         {
