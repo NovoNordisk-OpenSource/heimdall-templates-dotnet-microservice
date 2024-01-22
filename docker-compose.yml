@@ -8,13 +8,13 @@ services:
     environment:
       - "POSTGRES_USER=postgres"
       - "POSTGRES_PASSWORD=local"
-  # microservice.host.api:
-  #   image: microservice-api
-  #   build:
-  #     context: .
-  #     dockerfile: src/Microservice.Host.Api/Dockerfile
-  # microservice.host.daemon:
-  #   image: microservice-daemon
-  #   build:
-  #     context: .
-  #     dockerfile: src/Microservice.Host.Daemon/Dockerfile
+  microservice.host.api:
+    image: microservice-host-api
+    build:
+      context: .
+      dockerfile: src/Heimdall.Templates.DotNet.Microservice.Host.Api/Dockerfile
+  microservice.host.worker:
+    image: microservice-host-worker
+    build:
+      context: .
+      dockerfile: src/Heimdall.Templates.DotNet.Microservice.Host.Worker/Dockerfile
