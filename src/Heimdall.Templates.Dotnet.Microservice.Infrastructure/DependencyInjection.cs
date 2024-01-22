@@ -7,7 +7,7 @@ using BeHeroes.CodeOps.Infrastructure.EntityFramework;
 using Heimdall.Templates.DotNet.Microservice.Domain.Aggregates;
 using Heimdall.Templates.DotNet.Microservice.Domain.Repositories;
 using Heimdall.Templates.DotNet.Microservice.Domain.Services;
-using Heimdall.Templates.Dotnet.Microservice.Infrastructure.Strategies;
+using Heimdall.Templates.Dotnet.Microservice.Infrastructure.Kafka.Strategies;
 using Heimdall.Templates.Dotnet.Microservice.Infrastructure.EntityFramework;
 using Heimdall.Templates.Dotnet.Microservice.Infrastructure.EntityFramework.Repositories;
 using Heimdall.Templates.DotNet.Microservice.Application;

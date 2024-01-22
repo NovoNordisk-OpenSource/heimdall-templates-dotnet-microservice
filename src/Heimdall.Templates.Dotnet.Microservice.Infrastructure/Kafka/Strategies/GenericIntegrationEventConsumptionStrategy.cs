@@ -10,7 +10,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Heimdall.Templates.Dotnet.Microservice.Infrastructure.Strategies
+namespace Heimdall.Templates.Dotnet.Microservice.Infrastructure.Kafka.Strategies
 {
     public sealed class GenericIntegrationEventConsumptionStrategy : ConsumptionStrategy
     {
