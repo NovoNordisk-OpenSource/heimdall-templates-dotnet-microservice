@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  database:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - "POSTGRES_USER=postgres"
+      - "POSTGRES_PASSWORD=local"
+  # microservice.host.api:
+  #   image: microservice-api
+  #   build:
+  #     context: .
+  #     dockerfile: src/Microservice.Host.Api/Dockerfile
+  # microservice.host.daemon:
+  #   image: microservice-daemon
+  #   build:
+  #     context: .
+  #     dockerfile: src/Microservice.Host.Daemon/Dockerfile
