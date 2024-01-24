@@ -9,11 +9,12 @@
   <ItemGroup>
     <PackageReference Include="BeHeroes.CodeOps.Infrastructure.EntityFramework" Version="1.0.0" />
     <PackageReference Include="BeHeroes.CodeOps.Infrastructure.Kafka" Version="1.0.0" />
-    <PackageReference Include="Microsoft.Identity.Web.TokenAcquisition" Version="2.6.1" />
+		<PackageReference Include="Confluent.Kafka" Version="2.3.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Identity.Web.TokenAcquisition" Version="2.6.1" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
     <PackageReference Include="OpenTelemetry.Exporter.Console" Version="1.7.0" />
     <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.7.0" />

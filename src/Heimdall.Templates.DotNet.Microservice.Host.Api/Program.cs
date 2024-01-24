@@ -7,17 +7,23 @@ using Heimdall.Templates.Dotnet.Microservice.Infrastructure.OpenTelemetry;
 using OpenTelemetry;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using Microsoft.Identity.Web;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
 //TODO: Setup configuration files and configuration loaders (environment, json, secrets, vault)
 var otlpEndpoint = builder.Configuration["OTLP_ENDPOINT_URL"];
-var otlpTenantId = builder.Configuration["OTLP_TENANT_ID"];
+var otlpTenantId = builder.Configuration.GetSection("AzureAD")["TenantId"];
 
 // Add required services to the container.
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)                
+                .AddMicrosoftIdentityWebApi(builder.Configuration)
+                .EnableTokenAcquisitionToCallDownstreamApi()
+                .AddInMemoryTokenCaches();
 
 // Configure OpenTelemetry
 builder.Services.AddOpenTelemetry()
