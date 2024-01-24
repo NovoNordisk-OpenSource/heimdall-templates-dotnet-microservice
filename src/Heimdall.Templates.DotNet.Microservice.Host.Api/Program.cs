@@ -129,7 +129,7 @@ async Task<IEnumerable<DomainEntity>> GetEntities(ILogger<Program> logger, IAppl
     //TODO: Enable once connection string is wired into configuration
     // Dispatch command to application facade
     //var entities = await facade.Execute(command, ct);
-    //var entities = new List<DomainEntity>();
+    var entities = new List<DomainEntity>();
 
     // Add a tag to the custom activity containing a entity count (replace Hello World!, even thou we love it)
     activity?.SetTag("entityCount", entities.Count());
