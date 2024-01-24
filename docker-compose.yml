@@ -1,6 +1,5 @@
 version: '3.8'
 
-# TODO: Add kafka broker & friends (zookeeper, schema registry, etc)
 services:
   database:
     image: postgres:latest
@@ -9,11 +8,13 @@ services:
     environment:
       - "POSTGRES_USER=postgres"
       - "POSTGRES_PASSWORD=local"
+
   microservice.host.api:
     image: microservice-host-api
     build:
       context: .
       dockerfile: src/Heimdall.Templates.DotNet.Microservice.Host.Api/Dockerfile
+
   microservice.host.worker:
     image: microservice-host-worker
     build:
