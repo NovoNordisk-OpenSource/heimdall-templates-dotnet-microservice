@@ -26,7 +26,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddMicrosoftGraph(builder.Configuration.GetSection("GraphBeta"))
                 .AddInMemoryTokenCaches();
 
-// Configure OpenTelemetry
+// TODO: Configure OTLP logging
+// Configure OpenTelemetry Traces & Metrics
 builder.Services.AddOpenTelemetry()
                 .WithTracing(builder =>
                 {
