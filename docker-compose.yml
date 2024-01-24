@@ -14,6 +14,8 @@ services:
     build:
       context: .
       dockerfile: src/Heimdall.Templates.DotNet.Microservice.Host.Api/Dockerfile
+    ports:
+      - "54323:54323"
 
   microservice.host.worker:
     image: microservice-host-worker
