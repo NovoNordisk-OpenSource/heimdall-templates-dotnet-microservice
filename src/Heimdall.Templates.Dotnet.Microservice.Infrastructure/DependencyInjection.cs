@@ -25,14 +25,15 @@ namespace Heimdall.Templates.Dotnet.Microservice.Infrastructure
     {
         public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {            
+            //Upstream dependencies
+            services.AddApplication(configuration);
+            services.AddKafka(configuration);
+            services.AddSecurityPolicies();
+
             //Application dependencies
             services.AddApplicationContext(configuration);
             services.AddRepositories();
             services.AddStrategies();
-
-            //External dependencies
-            services.AddKafka(configuration);
-            services.AddSecurityPolicies();
         }
 
         private static void AddApplicationContext(this IServiceCollection services, IConfiguration configuration)
@@ -44,7 +45,7 @@ namespace Heimdall.Templates.Dotnet.Microservice.Infrastructure
                 var serviceProvider = services.BuildServiceProvider();
                 var dbContextOptions = serviceProvider.GetService<IOptions<EntityContextOptions>>();
                 var callingAssemblyName = Assembly.GetExecutingAssembly().GetName().Name;
-                var connectionString = dbContextOptions.Value.ConnectionStrings?.GetValue<string>(nameof(ApplicationContext));
+                var connectionString = dbContextOptions?.Value?.ConnectionStrings?.GetValue<string>(nameof(ApplicationContext));
 
                 if (string.IsNullOrEmpty(connectionString))
                 {
@@ -59,9 +60,11 @@ namespace Heimdall.Templates.Dotnet.Microservice.Infrastructure
 
                     }).Options;
 
-                using var context = new ApplicationContext(dbOptions, serviceProvider.GetService<IMediator>());
+                #pragma warning disable CS8604
+                using var context = new ApplicationContext(dbOptions, serviceProvider?.GetService<IMediator>());                
+                #pragma warning disable CS8604
 
-                if (dbContextOptions.Value.EnableAutoMigrations)
+                if (dbContextOptions?.Value?.EnableAutoMigrations == true)
                 {
                     context.Database.Migrate();
                 }

@@ -6,6 +6,8 @@ namespace Heimdall.Templates.DotNet.Microservice.Domain.Services
 {
     public interface IDomainService : IService
     {
+        Task<IEnumerable<DomainEntity>> GetDomainEntitiesAsync(CancellationToken ct = default);
+
         Task<IEnumerable<DomainEntity>> GetDomainEntityByCapabilityIdentifierAsync(string capabilityIdentifier, CancellationToken ct = default);
 
         Task<IEnumerable<DomainEntity>> GetDomainEntityByDateRangeAsync(DateTime startDate, DateTime? endDate, CancellationToken ct = default);

@@ -3,8 +3,9 @@ using BeHeroes.CodeOps.Abstractions.Events;
 using Confluent.Kafka;
 using System.Threading;
 using System.Threading.Tasks;
+using Heimdall.Templates.DotNet.Microservice.Application.Events.Domain;
 
-namespace Heimdall.Templates.DotNet.Microservice.Application.Events.Domain
+namespace Heimdall.Templates.Dotnet.Microservice.Infrastructure.Events.Domain
 {
     public class DomainEntityCreatedIntegrationEventHandler : IEventHandler<DomainEntityCreatedIntegrationEvent>
     {
@@ -20,7 +21,7 @@ namespace Heimdall.Templates.DotNet.Microservice.Application.Events.Domain
 
         public Task Handle(DomainEntityCreatedIntegrationEvent notification, CancellationToken ct = default)
         {
-            //TODO: Emit OTCL trace
+            //TODO: Custom activity trace
             throw new System.NotImplementedException();
         }
     }

@@ -19,9 +19,11 @@ namespace Heimdall.Templates.DotNet.Microservice.Application
             //Framework dependencies
             services.AddLogging();
 
-            //Application dependencies
+            //Upstream dependencies            
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));            
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));    
+
+            //Application dependencies        
             services.AddFacade();
             services.AddServices();
         }

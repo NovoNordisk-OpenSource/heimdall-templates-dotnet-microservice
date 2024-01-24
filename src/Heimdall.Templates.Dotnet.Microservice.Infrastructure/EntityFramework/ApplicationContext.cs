@@ -18,9 +18,11 @@ namespace Heimdall.Templates.Dotnet.Microservice.Infrastructure.EntityFramework
         public ApplicationContext()
         { }
 
+        #pragma warning disable CS8625
         public ApplicationContext(DbContextOptions options, IMediator mediator = default, IDictionary<Type, IEnumerable<IView>> seedData = default) : base(options)
         {
 
         }
+        #pragma warning restore CS8625
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Heimdall.Templates.Dotnet.Microservice.Infrastructure.EntityFramework.Migrations
 {
     /// <inheritdoc />
-    public partial class baseline : Migration
+    public partial class Baseline : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

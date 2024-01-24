@@ -13,6 +13,11 @@ namespace Heimdall.Templates.DotNet.Microservice.Domain.Services
             _domainEntityRepository = domainEntityRepository;
         }
 
+        public async Task<IEnumerable<DomainEntity>> GetDomainEntitiesAsync(CancellationToken ct = default)
+        {
+            return await _domainEntityRepository.GetAsync(o => true, ct);
+        }
+
         public async Task<IEnumerable<DomainEntity>> GetDomainEntityByCapabilityIdentifierAsync(string capabilityIdentifier, CancellationToken ct = default)
         {
             return await _domainEntityRepository.GetAsync(r => r.Objects.Any(ci => ci.CapabilityIdentifier == capabilityIdentifier), ct);
