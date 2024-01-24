@@ -32,13 +32,13 @@ namespace Heimdall.Templates.Dotnet.Microservice.Infrastructure.EntityFramework.
         {
             var entity = await _context.Entities.FindAsync(entityId, ct);
 
-            if (entity != null)
+            if (!entity?.Equals(null) == true)
             {
                 var entry = _context.Entry(entity);
 
-                if (entry != null)
+                if (!entry?.Equals(null) == true)
                 {
-                    await entry.Reference(i => i.Objects).LoadAsync(ct);
+                    await entry.Reference(o => o.Objects).LoadAsync(ct);
                 }
             }
 

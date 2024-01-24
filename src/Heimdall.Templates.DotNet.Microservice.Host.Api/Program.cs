@@ -7,12 +7,12 @@ using Heimdall.Templates.Dotnet.Microservice.Infrastructure.OpenTelemetry;
 using OpenTelemetry;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using OpenTelemetry.Metrics;
 using Microsoft.Identity.Web;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//TODO: Setup configuration files and configuration loaders (environment, json, secrets, vault)
 var otlpEndpoint = builder.Configuration["OTLP_ENDPOINT_URL"];
 var otlpTenantId = builder.Configuration.GetSection("AzureAD")["TenantId"];
 
@@ -69,10 +69,37 @@ builder.Services.AddOpenTelemetry()
                 })
                 .WithMetrics(builder =>
                 {
-                    //TODO: Finish configuration of metrics builder
                     builder.AddMeter(Metrics.RequestMeter.Name)
                            .AddMeter("Microsoft.AspNetCore.Hosting")
-                           .AddMeter("Microsoft.AspNetCore.Server.Kestrel");                    
+                           .AddMeter("Microsoft.AspNetCore.Server.Kestrel");
+                           
+                    if (otlpEndpoint != null)
+                    {
+                        builder.AddOtlpExporter(otlpOptions =>
+                        {
+                            otlpOptions.Endpoint = new Uri(otlpEndpoint);
+                            otlpOptions.HttpClientFactory = () =>
+                            {
+                                var innerHandler = new HttpClientHandler();
+                                var client = new HttpClient(
+                                    new AuthorizationHeaderHandler(
+                                        innerHandler,
+                                        AuthorizationEnvironmentOptions.NoAuth
+                                    )
+                                );
+                                
+                                client.Timeout = TimeSpan.FromMilliseconds(
+                                    otlpOptions.TimeoutMilliseconds
+                                );
+
+                                return client;
+                            };
+                        });
+                    }
+                    else
+                    {
+                        builder.AddConsoleExporter();
+                    }
                 });
 
 var app = builder.Build();
@@ -84,20 +111,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//TODO: Add HTTPS support
-//app.UseHttpsRedirection();
+// Create a counter to track the number of requests to the application
+var requestCounter = Metrics.RequestMeter.CreateCounter<int>("request.count", description: "Counts the number of requests");
 
-//TODO: Enable with custom metrics
-//var requestCounter = Metrics.RequestMeter.CreateCounter<int>("request.count", description: "Counts the number of requests");
-
-//TODO: Inject IApplicationFacade
+// Method to get all domain entities
 async Task<IEnumerable<DomainEntity>> GetEntities(ILogger<Program> logger, IApplicationFacade facade, CancellationToken ct = default)
 {
     // Initialize custom activity
     using var activity = Activities.ApplicationActivitySource.StartActivity("Host.Api.GetEntities");
 
-    //TODO: Enable with custom metrics
-    //requestCounter.Add(1);
+    // Increment custom metric
+    requestCounter.Add(1);
 
     //Initialize command to get all domain entities
     var command = new GetDomainEntitiesCommand();
@@ -105,7 +129,7 @@ async Task<IEnumerable<DomainEntity>> GetEntities(ILogger<Program> logger, IAppl
     //TODO: Enable once connection string is wired into configuration
     // Dispatch command to application facade
     //var entities = await facade.Execute(command, ct);
-    var entities = new List<DomainEntity>();
+    //var entities = new List<DomainEntity>();
 
     // Add a tag to the custom activity containing a entity count (replace Hello World!, even thou we love it)
     activity?.SetTag("entityCount", entities.Count());
@@ -113,8 +137,10 @@ async Task<IEnumerable<DomainEntity>> GetEntities(ILogger<Program> logger, IAppl
     return entities;
 }
 
+// Add a route to the application
 app.MapGet("/entities", GetEntities)
 .WithName("GetEntities")
 .WithOpenApi();
 
+// Start the application.
 app.Run();
