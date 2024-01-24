@@ -23,6 +23,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)                
                 .AddMicrosoftIdentityWebApi(builder.Configuration)
                 .EnableTokenAcquisitionToCallDownstreamApi()
+                .AddMicrosoftGraph(builder.Configuration.GetSection("GraphBeta"))
                 .AddInMemoryTokenCaches();
 
 // Configure OpenTelemetry

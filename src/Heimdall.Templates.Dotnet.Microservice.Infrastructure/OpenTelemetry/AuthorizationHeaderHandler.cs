@@ -173,7 +173,7 @@ namespace Heimdall.Templates.Dotnet.Microservice.Infrastructure.OpenTelemetry
                 case AuthorizationEnvironmentOptions.SystemAssignedIdentity:
 
                     managedIdApplication = ManagedIdentityApplicationBuilder
-                        .Create()
+                        .Create(Microsoft.Identity.Client.AppConfig.ManagedIdentityId.SystemAssigned)
                         // Azure Container Apps does not work without this
                         .WithExperimentalFeatures()
                         .Build();
@@ -224,7 +224,7 @@ namespace Heimdall.Templates.Dotnet.Microservice.Infrastructure.OpenTelemetry
                         );
 
                     managedIdApplication = ManagedIdentityApplicationBuilder
-                        .Create(uamiClientId)
+                        .Create(Microsoft.Identity.Client.AppConfig.ManagedIdentityId.WithUserAssignedResourceId(uamiClientId))
                         // Azure Container Apps does not work without this
                         .WithExperimentalFeatures()
                         .Build();
