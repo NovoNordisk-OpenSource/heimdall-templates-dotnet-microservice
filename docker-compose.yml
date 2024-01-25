@@ -3,6 +3,8 @@ version: '3.8'
 services:
   database:
     image: postgres:latest
+    networks:
+      - heimdall
     ports:
       - "5432:5432"
     environment:
@@ -14,11 +16,19 @@ services:
     build:
       context: .
       dockerfile: src/Heimdall.Templates.DotNet.Microservice.Host.Api/Dockerfile
+    networks:
+      - heimdall
     ports:
       - "54323:54323"
+      - "54324:54324"
 
   host.worker:
     image: host-worker
     build:
       context: .
       dockerfile: src/Heimdall.Templates.DotNet.Microservice.Host.Worker/Dockerfile
+    networks:
+      - heimdall
+
+networks:
+  heimdall:
