@@ -78,9 +78,11 @@ public sealed class DomainService(IDomainEntityRepository domainEntityRepository
                 entity.RemoveDomainObject(o);
 
             await UpdateDomainEntityAsync(entity, ct);
+
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     public async Task<DomainEntity> UpdateDomainEntityAsync(DomainEntity entity, CancellationToken ct = default)
