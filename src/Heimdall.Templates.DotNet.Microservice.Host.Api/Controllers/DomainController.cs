@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
 
+/// <summary>
+/// Represents a controller for managing domain entities.
+/// </summary>
 [Route("api/[controller]")]
 [ApiController]
 public class DomainController : ControllerBase
@@ -18,11 +21,21 @@ public class DomainController : ControllerBase
 
     private readonly ILogger<DomainController> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DomainController"/> class.
+    /// </summary>
+    /// <param name="logger">The logger instance.</param>
+    /// <param name="facade">The application facade instance.</param>
     public DomainController(ILogger<DomainController> logger, IApplicationFacade facade){
         _logger = logger;
         _facade = facade;
     } 
 
+    /// <summary>
+    /// Gets all domain entities asynchronously.
+    /// </summary>
+    /// <param name="ct">The cancellation token.</param>
+    /// <returns>A collection of domain entities.</returns>
     [HttpGet()]
     public async Task<IEnumerable<DomainEntity>> GetDomainEntitiesAsync(CancellationToken ct = default)
     {

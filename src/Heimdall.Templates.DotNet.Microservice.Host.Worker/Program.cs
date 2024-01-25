@@ -11,8 +11,8 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddHostedService<KafkaConsumerService>();
 
 var host = builder.Build();
-var executingAssembly = System.Reflection.Assembly.GetExecutingAssembly();
 
+// TODO: Configure OpenTelemetry Traces, Metrics & Logs
 using var tracerProvider = Sdk.CreateTracerProviderBuilder()
     .AddSource(Service.Name)
     .ConfigureResource(resource =>

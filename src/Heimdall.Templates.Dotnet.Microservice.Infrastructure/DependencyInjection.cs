@@ -23,6 +23,11 @@ using System.Reflection;
 
 public static class DependencyInjection
 {
+    /// <summary>
+    /// Adds infrastructure dependencies to the IServiceCollection.
+    /// </summary>
+    /// <param name="services">The IServiceCollection to add the dependencies to.</param>
+    /// <param name="configuration">The IConfiguration instance.</param>
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {            
         //Upstream dependencies
@@ -36,10 +41,17 @@ public static class DependencyInjection
         services.AddStrategies();
     }
 
+    /// <summary>
+    /// Adds the application context to the IServiceCollection.
+    /// </summary>
+    /// <param name="services">The IServiceCollection to add the application context to.</param>
+    /// <param name="configuration">The IConfiguration instance.</param>
     private static void AddApplicationContext(this IServiceCollection services, IConfiguration configuration)
     {
+        // Configure EntityContextOptions
         services.Configure<EntityContextOptions>(configuration);
 
+        // Add DbContext
         services.AddDbContext<ApplicationContext>(options =>
         {
             var serviceProvider = services.BuildServiceProvider();
@@ -60,9 +72,7 @@ public static class DependencyInjection
 
                 }).Options;
 
-            #pragma warning disable CS8604
-            using var context = new ApplicationContext(dbOptions, serviceProvider?.GetService<IMediator>());                
-            #pragma warning disable CS8604
+            using var context = new ApplicationContext(dbOptions, serviceProvider?.GetService<IMediator>());
 
             if (dbContextOptions?.Value?.EnableAutoMigrations == true)
             {
@@ -73,12 +83,20 @@ public static class DependencyInjection
         services.AddTransient<IUnitOfWork>(factory => factory.GetRequiredService<ApplicationContext>());
     }
 
+    /// <summary>
+    /// Adds repositories to the IServiceCollection.
+    /// </summary>
+    /// <param name="services">The IServiceCollection to add the repositories to.</param>
     private static void AddRepositories(this IServiceCollection services)
     {
         services.AddTransient<IRepository<DomainEntity>, DomainEntityRepository>();
         services.AddTransient<IDomainEntityRepository, DomainEntityRepository>();
     }
 
+    /// <summary>
+    /// Adds strategies to the IServiceCollection.
+    /// </summary>
+    /// <param name="services">The IServiceCollection to add the strategies to.</param>
     private static void AddStrategies(this IServiceCollection services)
     {
         services.AddTransient<IStrategy<ConsumeResult<string, string>>, GenericIntegrationEventConsumptionStrategy>();

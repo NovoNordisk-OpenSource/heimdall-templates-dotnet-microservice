@@ -28,7 +28,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddMicrosoftGraph(builder.Configuration.GetSection("GraphBeta"))
                 .AddInMemoryTokenCaches();
 
-// Configure OpenTelemetry Traces & Metrics
+// Configure OpenTelemetry Traces, Metrics & Logs
 builder.Services.AddOpenTelemetry()
                 .WithTracing(builder =>
                 {
@@ -141,6 +141,7 @@ builder.Logging.AddOpenTelemetry(logging =>
     }
 });
 
+// Add controllers.
 builder.Services.AddControllers();
 
 var app = builder.Build();
@@ -156,8 +157,10 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+// Map controllers routes.
 app.MapControllers();
 
+// Log the process id.
 app.Logger.LogStarting(Process.GetCurrentProcess().Id);
 
 // Start the application.

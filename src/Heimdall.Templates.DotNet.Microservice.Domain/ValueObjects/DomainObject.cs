@@ -7,6 +7,10 @@ using System.Text.Json.Serialization;
 /// <summary>
 /// Represents a domain object with a label, value, and capability identifier.
 /// </summary>
+/// <remarks>
+/// Value objects are a concept in software development that represent a descriptive aspect of the domain with no conceptual identity. In simpler terms, value objects are objects whose equality is determined by the value of their attributes rather than by their identity. 
+/// They are used to model attributes or characteristics of entities (aggregates) in a domain.
+/// </remarks>
 [method: JsonConstructor]
 public sealed class DomainObject(string label, string value, string capabilityIdentifier) : ValueObject
 {
