@@ -32,11 +32,11 @@ builder.Services.AddOpenTelemetry()
                 .WithTracing(builder =>
                 {
 
-                    builder.AddSource(Source.ServiceName)
+                    builder.AddSource(Service.Name)
                             .ConfigureResource(resource =>
                                 resource.AddService(
-                                    serviceName: Source.ServiceName,
-                                    serviceVersion: Source.ServiceVersion))
+                                    serviceName: Service.Name,
+                                    serviceVersion: Service.Version))
                             .AddAspNetCoreInstrumentation()
                             .AddHttpClientInstrumentation();
 
