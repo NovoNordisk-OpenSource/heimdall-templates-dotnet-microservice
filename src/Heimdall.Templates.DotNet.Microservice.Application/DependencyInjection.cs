@@ -12,8 +12,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System.Reflection;
 
+/// <summary>
+/// Provides extension methods to configure dependency injection for the application layer.
+/// </summary>
 public static class DependencyInjection
 {
+    /// <summary>
+    /// Configures the application layer dependencies.
+    /// </summary>
+    /// <param name="services">The <see cref="IServiceCollection"/> to add the dependencies to.</param>
+    /// <param name="configuration">The <see cref="IConfiguration"/> instance.</param>
     public static void AddApplication(this IServiceCollection services, IConfiguration configuration)
     {
         //Framework dependencies

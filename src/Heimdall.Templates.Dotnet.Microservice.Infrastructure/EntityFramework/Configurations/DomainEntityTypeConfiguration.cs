@@ -5,8 +5,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 
+/// <summary>
+/// Represents the entity type configuration for the <see cref="DomainEntity"/> class.
+/// </summary>
 public class DomainEntityTypeConfiguration : IEntityTypeConfiguration<DomainEntity>
 {
+    /// <summary>
+    /// Configures the entity type.
+    /// </summary>
+    /// <param name="builder">The entity type builder.</param>
     public void Configure(EntityTypeBuilder<DomainEntity> builder)
     {
         builder.Ignore(v => v.DomainEvents);

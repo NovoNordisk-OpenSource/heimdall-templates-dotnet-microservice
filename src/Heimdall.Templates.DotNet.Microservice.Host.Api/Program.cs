@@ -8,8 +8,10 @@ using OpenTelemetry;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using OpenTelemetry.Metrics;
+using OpenTelemetry.Logs;
 using Microsoft.Identity.Web;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,7 +28,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddMicrosoftGraph(builder.Configuration.GetSection("GraphBeta"))
                 .AddInMemoryTokenCaches();
 
-// TODO: Configure OTLP logging
 // Configure OpenTelemetry Traces & Metrics
 builder.Services.AddOpenTelemetry()
                 .WithTracing(builder =>
@@ -103,43 +104,61 @@ builder.Services.AddOpenTelemetry()
                     }
                 });
 
+builder.Logging.AddOpenTelemetry(logging =>
+{
+    logging.IncludeScopes = true;
+
+    var resourceBuilder = ResourceBuilder
+        .CreateDefault()
+        .AddService(Service.Name);
+
+    if (otlpEndpoint != null)
+    {
+        logging.SetResourceBuilder(resourceBuilder).AddOtlpExporter(otlpOptions =>
+        {
+            otlpOptions.Endpoint = new Uri(otlpEndpoint);
+            otlpOptions.HttpClientFactory = () =>
+            {
+                var innerHandler = new HttpClientHandler();
+                var client = new HttpClient(
+                    new AuthorizationHeaderHandler(
+                        innerHandler,
+                        AuthorizationEnvironmentOptions.NoAuth
+                    )
+                );
+                
+                client.Timeout = TimeSpan.FromMilliseconds(
+                    otlpOptions.TimeoutMilliseconds
+                );
+
+                return client;
+            };
+        });
+    }
+    else
+    {
+        logging.SetResourceBuilder(resourceBuilder).AddConsoleExporter();
+    }
+});
+
+builder.Services.AddControllers();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+        options.RoutePrefix = string.Empty;
+    });
 }
 
-// Create a counter to track the number of requests to the application
-var requestCounter = Metrics.RequestMeter.CreateCounter<int>("request.count", description: "Counts the number of requests");
+app.MapControllers();
 
-// Method to get all domain entities
-async Task<IEnumerable<DomainEntity>> GetEntities(ILogger<Program> logger, IApplicationFacade facade, CancellationToken ct = default)
-{
-    // Initialize custom activity
-    using var activity = Activities.ApplicationActivitySource.StartActivity("Host.Api.GetEntities");
-
-    // Increment custom metric
-    requestCounter.Add(1);
-
-    //Initialize command to get all domain entities
-    var command = new GetDomainEntitiesCommand();
-
-    // Dispatch command to application facade
-    var entities = await facade.Execute(command, ct);
-    
-    // Add a tag to the custom activity containing a entity count (replace Hello World!, even thou we love it)
-    activity?.SetTag("entityCount", entities.Count());
-
-    return entities;
-}
-
-// Add a route to the application
-app.MapGet("/entities", GetEntities)
-.WithName("GetEntities")
-.WithOpenApi();
+app.Logger.LogStarting(Process.GetCurrentProcess().Id);
 
 // Start the application.
 app.Run();
