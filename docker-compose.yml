@@ -9,16 +9,16 @@ services:
       - "POSTGRES_USER=postgres"
       - "POSTGRES_PASSWORD=local"
 
-  microservice.host.api:
-    image: microservice-host-api
+  host.api:
+    image: host-api
     build:
       context: .
       dockerfile: src/Heimdall.Templates.DotNet.Microservice.Host.Api/Dockerfile
     ports:
       - "54323:54323"
 
-  microservice.host.worker:
-    image: microservice-host-worker
+  host.worker:
+    image: host-worker
     build:
       context: .
       dockerfile: src/Heimdall.Templates.DotNet.Microservice.Host.Worker/Dockerfile
