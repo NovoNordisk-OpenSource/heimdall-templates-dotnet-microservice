@@ -28,7 +28,7 @@ public class DomainEntityRepository : EntityFrameworkRepository<DomainEntity, Ap
         }, ct);
     }
 
-    public async Task<DomainEntity> GetAsync(Guid entityId, CancellationToken ct = default)
+    public async Task<DomainEntity?> GetAsync(Guid entityId, CancellationToken ct = default)
     {
         var entity = await _context.Entities.FindAsync(entityId, ct);
 
