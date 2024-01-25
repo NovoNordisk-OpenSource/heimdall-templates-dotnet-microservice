@@ -8,5 +8,6 @@ public sealed class DefaultProfile : AutoMapper.Profile
 {
     public DefaultProfile()
     {
+        //TODO: Configure mappings
     }
 }

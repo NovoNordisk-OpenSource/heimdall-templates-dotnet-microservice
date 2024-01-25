@@ -6,22 +6,27 @@ using Confluent.Kafka;
 using System.Threading;
 using System.Threading.Tasks;
 using Heimdall.Templates.DotNet.Microservice.Application.Events.Domain;
+using Heimdall.Templates.DotNet.Microservice.Application.Telemetry;
 
 public class DomainEntityCreatedIntegrationEventHandler : IEventHandler<DomainEntityCreatedIntegrationEvent>
 {
-    private readonly IMapper _mapper;
-
     private readonly IProducer<Ignore, IIntegrationEvent> _producer;
 
-    public DomainEntityCreatedIntegrationEventHandler(IMapper mapper, IProducer<Ignore, IIntegrationEvent> producer)
+    private readonly System.Diagnostics.Metrics.Counter<int> _eventCounter = Metrics.EventMeter.CreateCounter<int>("event.count", description: "Counts the number of events processed by the handler");
+
+    public DomainEntityCreatedIntegrationEventHandler(IProducer<Ignore, IIntegrationEvent> producer)
     {
-        _mapper = mapper;
         _producer = producer;
     }
 
-    public Task Handle(DomainEntityCreatedIntegrationEvent notification, CancellationToken ct = default)
+    public async Task Handle(DomainEntityCreatedIntegrationEvent notification, CancellationToken ct = default)
     {
-        //TODO: Custom activity trace
-        throw new System.NotImplementedException();
+        using var activity = Activities.ApplicationActivitySource.StartActivity(typeof(DomainEntityCreatedIntegrationEventHandler).ToString());
+        
+        // Increment custom metric
+        _eventCounter.Add(1);
+
+        //TODO: Fetch topic from injected options
+        await _producer.ProduceAsync("topic", new Message<Ignore, IIntegrationEvent> { Value=notification }, ct);
     }
 }

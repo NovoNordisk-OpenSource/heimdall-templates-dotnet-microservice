@@ -4,14 +4,9 @@ using Heimdall.Templates.DotNet.Microservice.Domain.Aggregates;
 using Heimdall.Templates.DotNet.Microservice.Domain.Repositories;
 using Heimdall.Templates.DotNet.Microservice.Domain.ValueObjects;
 
-public sealed class DomainService : IDomainService
+public sealed class DomainService(IDomainEntityRepository domainEntityRepository) : IDomainService
 {
-    private readonly IDomainEntityRepository _domainEntityRepository;
-
-    public DomainService(IDomainEntityRepository domainEntityRepository)
-    {
-        _domainEntityRepository = domainEntityRepository;
-    }
+    private readonly IDomainEntityRepository _domainEntityRepository = domainEntityRepository;
 
     public async Task<IEnumerable<DomainEntity>> GetDomainEntitiesAsync(CancellationToken ct = default)
     {
