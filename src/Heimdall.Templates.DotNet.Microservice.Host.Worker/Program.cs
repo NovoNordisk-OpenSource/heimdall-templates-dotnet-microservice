@@ -1,4 +1,5 @@
 using BeHeroes.CodeOps.Infrastructure.Kafka;
+using Heimdall.Templates.DotNet.Microservice.Application.Telemetry;
 using Heimdall.Templates.Dotnet.Microservice.Infrastructure;
 using OpenTelemetry;
 using OpenTelemetry.Resources;
@@ -13,11 +14,11 @@ var host = builder.Build();
 var executingAssembly = System.Reflection.Assembly.GetExecutingAssembly();
 
 using var tracerProvider = Sdk.CreateTracerProviderBuilder()
-    .AddSource(executingAssembly.FullName)
+    .AddSource(Service.Name)
     .ConfigureResource(resource =>
         resource.AddService(
-          serviceName: executingAssembly.FullName,
-          serviceVersion: executingAssembly.ManifestModule.ModuleVersionId.ToString()))
+          serviceName: Service.Name,
+          serviceVersion: Service.Version))
     .AddConsoleExporter()
     .Build();
 

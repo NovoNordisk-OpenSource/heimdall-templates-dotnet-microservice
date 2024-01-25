@@ -32,11 +32,11 @@ public class DomainEntityRepository : EntityFrameworkRepository<DomainEntity, Ap
     {
         var entity = await _context.Entities.FindAsync(entityId, ct);
 
-        if (!entity?.Equals(null) == true)
+        if (entity is not null)
         {
             var entry = _context.Entry(entity);
 
-            if (!entry?.Equals(null) == true)
+            if (entry != null)
             {
                 await entry.Reference(o => o.Objects).LoadAsync(ct);
             }

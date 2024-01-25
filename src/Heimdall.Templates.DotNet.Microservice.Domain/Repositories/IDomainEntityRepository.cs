@@ -5,5 +5,5 @@ using Heimdall.Templates.DotNet.Microservice.Domain.Aggregates;
 
 public interface IDomainEntityRepository : IRepository<DomainEntity>
 {
-    Task<DomainEntity> GetAsync(Guid entityId, CancellationToken ct = default);
+    Task<DomainEntity?> GetAsync(Guid entityId, CancellationToken ct = default);
 }

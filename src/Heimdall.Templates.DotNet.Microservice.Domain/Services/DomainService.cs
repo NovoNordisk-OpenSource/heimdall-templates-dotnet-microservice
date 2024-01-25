@@ -45,9 +45,9 @@ public sealed class DomainService : IDomainService
     public async Task<DomainObject> AddOrUpdateDomainObjectAsync(Guid entityId, string capabilityIdentifier, string label, string value, CancellationToken ct = default)
     {
         var @object = new DomainObject(label, value, capabilityIdentifier);
-        DomainEntity entity = await _domainEntityRepository.GetAsync(entityId, ct);
+        var entity = await _domainEntityRepository.GetAsync(entityId, ct);
 
-        if (entity.Objects != null && !entity.Objects.Any(o => o.Equals(@object)))
+        if (entity is not null && entity.Objects != null && !entity.Objects.Any(o => o.Equals(@object)))
         {
             entity.AddDomainObject(@object);
             await UpdateDomainEntityAsync(entity, ct);
@@ -60,7 +60,10 @@ public sealed class DomainService : IDomainService
     {
         var entity = await _domainEntityRepository.GetAsync(entityId);
 
-        _domainEntityRepository.Delete(entity);
+        if (entity is not null)
+        {
+            _domainEntityRepository.Delete(entity);
+        }
 
         return await _domainEntityRepository.UnitOfWork.SaveEntitiesAsync(ct);
     }
@@ -68,15 +71,19 @@ public sealed class DomainService : IDomainService
     public async Task<bool> DeleteDomainObjectAsync(Guid entityId, string label, string capabilityIdentifier, CancellationToken ct = default)
     {            
         var entity = await _domainEntityRepository.GetAsync(entityId, ct);
-        var query = entity.Objects.Where(ci => ci.Label == label).AsQueryable();
+        
+        if (entity is not null)
+        {
+            var query = entity.Objects.Where(ci => ci.Label == label).AsQueryable();
 
-        if (!string.IsNullOrEmpty(capabilityIdentifier))
-            query = query.Where(o => o.CapabilityIdentifier == capabilityIdentifier);
+            if (!string.IsNullOrEmpty(capabilityIdentifier))
+                query = query.Where(o => o.CapabilityIdentifier == capabilityIdentifier);
 
-        foreach (var o in query.AsEnumerable())
-            entity.RemoveDomainObject(o);
+            foreach (var o in query.AsEnumerable())
+                entity.RemoveDomainObject(o);
 
-        await UpdateDomainEntityAsync(entity, ct);
+            await UpdateDomainEntityAsync(entity, ct);
+        }
 
         return true;
     }
