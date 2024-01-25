@@ -1,9 +1,8 @@
-﻿using BeHeroes.CodeOps.Abstractions.Facade;
+﻿namespace Heimdall.Templates.DotNet.Microservice.Application;
 
-namespace Heimdall.Templates.DotNet.Microservice.Application
+using BeHeroes.CodeOps.Abstractions.Facade;
+
+public interface IApplicationFacade : IFacade
 {
-    public interface IApplicationFacade : IFacade
-    {
 
-    }
 }

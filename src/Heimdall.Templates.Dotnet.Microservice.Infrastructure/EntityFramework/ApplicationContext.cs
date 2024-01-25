@@ -1,4 +1,6 @@
-﻿using BeHeroes.CodeOps.Abstractions.Data;
+﻿namespace Heimdall.Templates.Dotnet.Microservice.Infrastructure.EntityFramework;
+
+using BeHeroes.CodeOps.Abstractions.Data;
 using BeHeroes.CodeOps.Infrastructure.EntityFramework;
 using Heimdall.Templates.DotNet.Microservice.Domain.Aggregates;
 using Heimdall.Templates.DotNet.Microservice.Domain.ValueObjects;
@@ -7,22 +9,19 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 
-namespace Heimdall.Templates.Dotnet.Microservice.Infrastructure.EntityFramework
+public class ApplicationContext : EntityContext
 {
-    public class ApplicationContext : EntityContext
+    public virtual DbSet<DomainEntity> Entities { get; set; }
+
+    public virtual DbSet<DomainObject> Objects { get; set; }
+
+    public ApplicationContext()
+    { }
+
+    #pragma warning disable CS8625
+    public ApplicationContext(DbContextOptions options, IMediator mediator = default, IDictionary<Type, IEnumerable<IView>> seedData = default) : base(options)
     {
-        public virtual DbSet<DomainEntity> Entities { get; set; }
 
-        public virtual DbSet<DomainObject> Objects { get; set; }
-
-        public ApplicationContext()
-        { }
-
-        #pragma warning disable CS8625
-        public ApplicationContext(DbContextOptions options, IMediator mediator = default, IDictionary<Type, IEnumerable<IView>> seedData = default) : base(options)
-        {
-
-        }
-        #pragma warning restore CS8625
     }
+    #pragma warning restore CS8625
 }

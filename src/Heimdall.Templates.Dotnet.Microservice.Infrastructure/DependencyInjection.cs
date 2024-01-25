@@ -1,3 +1,5 @@
+namespace Heimdall.Templates.Dotnet.Microservice.Infrastructure;
+
 using BeHeroes.CodeOps.Abstractions.Data;
 using BeHeroes.CodeOps.Abstractions.Repositories;
 using BeHeroes.CodeOps.Abstractions.Strategies;
@@ -19,69 +21,66 @@ using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
-namespace Heimdall.Templates.Dotnet.Microservice.Infrastructure
+public static class DependencyInjection
 {
-    public static class DependencyInjection
+    public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    {            
+        //Upstream dependencies
+        services.AddApplication(configuration);
+        services.AddKafka(configuration);
+        services.AddSecurityPolicies();
+
+        //Application dependencies
+        services.AddApplicationContext(configuration);
+        services.AddRepositories();
+        services.AddStrategies();
+    }
+
+    private static void AddApplicationContext(this IServiceCollection services, IConfiguration configuration)
     {
-        public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
-        {            
-            //Upstream dependencies
-            services.AddApplication(configuration);
-            services.AddKafka(configuration);
-            services.AddSecurityPolicies();
+        services.Configure<EntityContextOptions>(configuration);
 
-            //Application dependencies
-            services.AddApplicationContext(configuration);
-            services.AddRepositories();
-            services.AddStrategies();
-        }
-
-        private static void AddApplicationContext(this IServiceCollection services, IConfiguration configuration)
+        services.AddDbContext<ApplicationContext>(options =>
         {
-            services.Configure<EntityContextOptions>(configuration);
+            var serviceProvider = services.BuildServiceProvider();
+            var dbContextOptions = serviceProvider.GetService<IOptions<EntityContextOptions>>();
+            var callingAssemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+            var connectionString = dbContextOptions?.Value?.ConnectionStrings?.GetValue<string>(nameof(ApplicationContext));
 
-            services.AddDbContext<ApplicationContext>(options =>
+            if (string.IsNullOrEmpty(connectionString))
             {
-                var serviceProvider = services.BuildServiceProvider();
-                var dbContextOptions = serviceProvider.GetService<IOptions<EntityContextOptions>>();
-                var callingAssemblyName = Assembly.GetExecutingAssembly().GetName().Name;
-                var connectionString = dbContextOptions?.Value?.ConnectionStrings?.GetValue<string>(nameof(ApplicationContext));
+                throw new ApplicationFacadeException($"Could not find connection string with entry key: {nameof(ApplicationContext)}");
+            }
 
-                if (string.IsNullOrEmpty(connectionString))
+            var dbOptions = options.UseNpgsql(connectionString,
+                sqliteOptions =>
                 {
-                    throw new ApplicationFacadeException($"Could not find connection string with entry key: {nameof(ApplicationContext)}");
-                }
+                    sqliteOptions.MigrationsAssembly(callingAssemblyName);
+                    sqliteOptions.MigrationsHistoryTable(callingAssemblyName + "_MigrationHistory");
 
-                var dbOptions = options.UseNpgsql(connectionString,
-                    sqliteOptions =>
-                    {
-                        sqliteOptions.MigrationsAssembly(callingAssemblyName);
-                        sqliteOptions.MigrationsHistoryTable(callingAssemblyName + "_MigrationHistory");
+                }).Options;
 
-                    }).Options;
+            #pragma warning disable CS8604
+            using var context = new ApplicationContext(dbOptions, serviceProvider?.GetService<IMediator>());                
+            #pragma warning disable CS8604
 
-                #pragma warning disable CS8604
-                using var context = new ApplicationContext(dbOptions, serviceProvider?.GetService<IMediator>());                
-                #pragma warning disable CS8604
+            if (dbContextOptions?.Value?.EnableAutoMigrations == true)
+            {
+                context.Database.Migrate();
+            }
+        });
 
-                if (dbContextOptions?.Value?.EnableAutoMigrations == true)
-                {
-                    context.Database.Migrate();
-                }
-            });
+        services.AddTransient<IUnitOfWork>(factory => factory.GetRequiredService<ApplicationContext>());
+    }
 
-            services.AddTransient<IUnitOfWork>(factory => factory.GetRequiredService<ApplicationContext>());
-        }
+    private static void AddRepositories(this IServiceCollection services)
+    {
+        services.AddTransient<IRepository<DomainEntity>, DomainEntityRepository>();
+        services.AddTransient<IDomainEntityRepository, DomainEntityRepository>();
+    }
 
-        private static void AddRepositories(this IServiceCollection services)
-        {
-            services.AddTransient<IRepository<DomainEntity>, DomainEntityRepository>();
-            services.AddTransient<IDomainEntityRepository, DomainEntityRepository>();
-        }
-
-        private static void AddStrategies(this IServiceCollection services)
-        {
-            services.AddTransient<IStrategy<ConsumeResult<string, string>>, GenericIntegrationEventConsumptionStrategy>();
-        }
+    private static void AddStrategies(this IServiceCollection services)
+    {
+        services.AddTransient<IStrategy<ConsumeResult<string, string>>, GenericIntegrationEventConsumptionStrategy>();
     }
 }

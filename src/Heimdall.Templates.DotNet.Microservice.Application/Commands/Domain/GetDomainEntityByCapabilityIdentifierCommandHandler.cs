@@ -1,3 +1,5 @@
+namespace Heimdall.Templates.DotNet.Microservice.Application.Commands.Domain;
+
 using BeHeroes.CodeOps.Abstractions.Commands;
 using Heimdall.Templates.DotNet.Microservice.Domain.Aggregates;
 using Heimdall.Templates.DotNet.Microservice.Domain.Services;
@@ -6,20 +8,17 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Heimdall.Templates.DotNet.Microservice.Application.Commands.Domain
+public sealed class GetDomainEntityByCapabilityIdentifierCommandHandler : ICommandHandler<GetDomainEntityByCapabilityIdentifierCommand, IEnumerable<DomainEntity>>
 {
-    public sealed class GetDomainEntityByCapabilityIdentifierCommandHandler : ICommandHandler<GetDomainEntityByCapabilityIdentifierCommand, IEnumerable<DomainEntity>>
+    private readonly IDomainService _domainService;
+
+    public GetDomainEntityByCapabilityIdentifierCommandHandler(IDomainService domainService)
     {
-        private readonly IDomainService _domainService;
+        _domainService = domainService ?? throw new ArgumentNullException(nameof(domainService));
+    }
 
-        public GetDomainEntityByCapabilityIdentifierCommandHandler(IDomainService domainService)
-        {
-            _domainService = domainService ?? throw new ArgumentNullException(nameof(domainService));
-        }
-
-        public async Task<IEnumerable<DomainEntity>> Handle(GetDomainEntityByCapabilityIdentifierCommand command, CancellationToken ct = default)
-        {
-            return await _domainService.GetDomainEntityByCapabilityIdentifierAsync(command.CapabilityIdentifier, ct);
-        }
+    public async Task<IEnumerable<DomainEntity>> Handle(GetDomainEntityByCapabilityIdentifierCommand command, CancellationToken ct = default)
+    {
+        return await _domainService.GetDomainEntityByCapabilityIdentifierAsync(command.CapabilityIdentifier, ct);
     }
 }
