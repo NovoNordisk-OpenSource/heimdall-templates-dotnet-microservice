@@ -1,17 +1,4 @@
-using Heimdall.Templates.DotNet.Microservice.Domain.Aggregates;
-using Heimdall.Templates.DotNet.Microservice.Application;
-using Heimdall.Templates.DotNet.Microservice.Application.Commands.Domain;
-using Heimdall.Templates.DotNet.Microservice.Application.Telemetry;
-using Heimdall.Templates.Dotnet.Microservice.Infrastructure;
-using Heimdall.Templates.Dotnet.Microservice.Infrastructure.OpenTelemetry;
-using OpenTelemetry;
-using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using OpenTelemetry.Metrics;
-using OpenTelemetry.Logs;
-using Microsoft.Identity.Web;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,87 +9,78 @@ var otlpTenantId = builder.Configuration.GetSection("AzureAD")["TenantId"];
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)                
-                .AddMicrosoftIdentityWebApi(builder.Configuration)
-                .EnableTokenAcquisitionToCallDownstreamApi()
-                .AddMicrosoftGraph(builder.Configuration.GetSection("GraphBeta"))
-                .AddInMemoryTokenCaches();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApi(builder.Configuration)
+    .EnableTokenAcquisitionToCallDownstreamApi()
+    .AddMicrosoftGraph(builder.Configuration.GetSection("GraphBeta"))
+    .AddInMemoryTokenCaches();
 
 // Configure OpenTelemetry Traces, Metrics & Logs
 builder.Services.AddOpenTelemetry()
-                .WithTracing(builder =>
+    .WithTracing(builder =>
+    {
+        builder.AddSource(Service.Name)
+            .ConfigureResource(resource =>
+                resource.AddService(
+                    Service.Name,
+                    serviceVersion: Service.Version))
+            .AddAspNetCoreInstrumentation()
+            .AddHttpClientInstrumentation();
+
+        if (otlpEndpoint != null)
+            builder.AddOtlpExporter(otlpOptions =>
+            {
+                otlpOptions.Endpoint = new Uri(otlpEndpoint);
+                otlpOptions.HttpClientFactory = () =>
                 {
+                    var innerHandler = new HttpClientHandler();
+                    var client = new HttpClient(
+                        new AuthorizationHeaderHandler(
+                            innerHandler,
+                            AuthorizationEnvironmentOptions.NoAuth
+                        )
+                    );
 
-                    builder.AddSource(Service.Name)
-                            .ConfigureResource(resource =>
-                                resource.AddService(
-                                    serviceName: Service.Name,
-                                    serviceVersion: Service.Version))
-                            .AddAspNetCoreInstrumentation()
-                            .AddHttpClientInstrumentation();
+                    client.Timeout = TimeSpan.FromMilliseconds(
+                        otlpOptions.TimeoutMilliseconds
+                    );
 
-                    if (otlpEndpoint != null)
-                    {
-                        builder.AddOtlpExporter(otlpOptions =>
-                        {
-                            otlpOptions.Endpoint = new Uri(otlpEndpoint);
-                            otlpOptions.HttpClientFactory = () =>
-                            {
-                                var innerHandler = new HttpClientHandler();
-                                var client = new HttpClient(
-                                    new AuthorizationHeaderHandler(
-                                        innerHandler,
-                                        AuthorizationEnvironmentOptions.NoAuth
-                                    )
-                                );
-                                
-                                client.Timeout = TimeSpan.FromMilliseconds(
-                                    otlpOptions.TimeoutMilliseconds
-                                );
+                    return client;
+                };
+            });
+        else
+            builder.AddConsoleExporter();
+    })
+    .WithMetrics(builder =>
+    {
+        builder.AddMeter(Metrics.RequestMeter.Name)
+            .AddMeter("Microsoft.AspNetCore.Hosting")
+            .AddMeter("Microsoft.AspNetCore.Server.Kestrel");
 
-                                return client;
-                            };
-                        });
-                    }
-                    else
-                    {
-                        builder.AddConsoleExporter();
-                    }
-                })
-                .WithMetrics(builder =>
+        if (otlpEndpoint != null)
+            builder.AddOtlpExporter(otlpOptions =>
+            {
+                otlpOptions.Endpoint = new Uri(otlpEndpoint);
+                otlpOptions.HttpClientFactory = () =>
                 {
-                    builder.AddMeter(Metrics.RequestMeter.Name)
-                           .AddMeter("Microsoft.AspNetCore.Hosting")
-                           .AddMeter("Microsoft.AspNetCore.Server.Kestrel");
-                           
-                    if (otlpEndpoint != null)
-                    {
-                        builder.AddOtlpExporter(otlpOptions =>
-                        {
-                            otlpOptions.Endpoint = new Uri(otlpEndpoint);
-                            otlpOptions.HttpClientFactory = () =>
-                            {
-                                var innerHandler = new HttpClientHandler();
-                                var client = new HttpClient(
-                                    new AuthorizationHeaderHandler(
-                                        innerHandler,
-                                        AuthorizationEnvironmentOptions.NoAuth
-                                    )
-                                );
-                                
-                                client.Timeout = TimeSpan.FromMilliseconds(
-                                    otlpOptions.TimeoutMilliseconds
-                                );
+                    var innerHandler = new HttpClientHandler();
+                    var client = new HttpClient(
+                        new AuthorizationHeaderHandler(
+                            innerHandler,
+                            AuthorizationEnvironmentOptions.NoAuth
+                        )
+                    );
 
-                                return client;
-                            };
-                        });
-                    }
-                    else
-                    {
-                        builder.AddConsoleExporter();
-                    }
-                });
+                    client.Timeout = TimeSpan.FromMilliseconds(
+                        otlpOptions.TimeoutMilliseconds
+                    );
+
+                    return client;
+                };
+            });
+        else
+            builder.AddConsoleExporter();
+    });
 
 builder.Logging.AddOpenTelemetry(logging =>
 {
@@ -113,7 +91,6 @@ builder.Logging.AddOpenTelemetry(logging =>
         .AddService(Service.Name);
 
     if (otlpEndpoint != null)
-    {
         logging.SetResourceBuilder(resourceBuilder).AddOtlpExporter(otlpOptions =>
         {
             otlpOptions.Endpoint = new Uri(otlpEndpoint);
@@ -126,7 +103,7 @@ builder.Logging.AddOpenTelemetry(logging =>
                         AuthorizationEnvironmentOptions.NoAuth
                     )
                 );
-                
+
                 client.Timeout = TimeSpan.FromMilliseconds(
                     otlpOptions.TimeoutMilliseconds
                 );
@@ -134,11 +111,8 @@ builder.Logging.AddOpenTelemetry(logging =>
                 return client;
             };
         });
-    }
     else
-    {
         logging.SetResourceBuilder(resourceBuilder).AddConsoleExporter();
-    }
 });
 
 // Add controllers.

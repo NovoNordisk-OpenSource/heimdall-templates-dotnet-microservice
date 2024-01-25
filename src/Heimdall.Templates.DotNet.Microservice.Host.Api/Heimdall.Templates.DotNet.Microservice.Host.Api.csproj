@@ -1,23 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <InvariantGlobalization>true</InvariantGlobalization>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <InvariantGlobalization>true</InvariantGlobalization>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.1" />
-    <PackageReference Include="Microsoft.Identity.Web" Version="2.16.1" />
-    <PackageReference Include="Microsoft.Identity.Web.GraphServiceClient" Version="2.16.1" />
-    <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.7.0" />
-    <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.7.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\Heimdall.Templates.Dotnet.Microservice.Infrastructure\Heimdall.Templates.Dotnet.Microservice.Infrastructure.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.1"/>
+        <PackageReference Include="Microsoft.Identity.Web" Version="2.16.1"/>
+        <PackageReference Include="Microsoft.Identity.Web.GraphServiceClient" Version="2.16.1"/>
+        <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.7.0"/>
+        <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.7.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Heimdall.Templates.Dotnet.Microservice.Infrastructure\Heimdall.Templates.Dotnet.Microservice.Infrastructure.csproj"/>
+    </ItemGroup>
 
 </Project>
