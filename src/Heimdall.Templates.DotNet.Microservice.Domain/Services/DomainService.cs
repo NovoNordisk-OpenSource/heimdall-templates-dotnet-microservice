@@ -1,18 +1,16 @@
+using Heimdall.Templates.DotNet.Microservice.Domain.Repositories;
+
 namespace Heimdall.Templates.DotNet.Microservice.Domain.Services;
 
-using Heimdall.Templates.DotNet.Microservice.Domain.Aggregates;
-using Heimdall.Templates.DotNet.Microservice.Domain.Repositories;
-using Heimdall.Templates.DotNet.Microservice.Domain.ValueObjects;
-
 /// <summary>
-/// Represents a domain service that provides operations related to domain entities.
+///     Represents a domain service that provides operations related to domain entities.
 /// </summary>
 public sealed class DomainService(IDomainEntityRepository domainEntityRepository) : IDomainService
 {
     private readonly IDomainEntityRepository _domainEntityRepository = domainEntityRepository;
 
     /// <summary>
-    /// Retrieves all domain entities asynchronously.
+    ///     Retrieves all domain entities asynchronously.
     /// </summary>
     /// <param name="ct">The cancellation token.</param>
     /// <returns>A collection of domain entities.</returns>
@@ -22,39 +20,44 @@ public sealed class DomainService(IDomainEntityRepository domainEntityRepository
     }
 
     /// <summary>
-    /// Retrieves domain entities by capability identifier asynchronously.
+    ///     Retrieves domain entities by capability identifier asynchronously.
     /// </summary>
     /// <param name="capabilityIdentifier">The capability identifier.</param>
     /// <param name="ct">The cancellation token.</param>
     /// <returns>A collection of domain entities.</returns>
-    public async Task<IEnumerable<DomainEntity>> GetDomainEntityByCapabilityIdentifierAsync(string capabilityIdentifier, CancellationToken ct = default)
+    public async Task<IEnumerable<DomainEntity>> GetDomainEntityByCapabilityIdentifierAsync(string capabilityIdentifier,
+        CancellationToken ct = default)
     {
-        return await _domainEntityRepository.GetAsync(r => r.Objects.Any(ci => ci.CapabilityIdentifier == capabilityIdentifier), ct);
+        return await _domainEntityRepository.GetAsync(
+            r => r.Objects.Any(ci => ci.CapabilityIdentifier == capabilityIdentifier), ct);
     }
 
     /// <summary>
-    /// Retrieves domain entities by date range asynchronously.
+    ///     Retrieves domain entities by date range asynchronously.
     /// </summary>
     /// <param name="startDate">The start date.</param>
     /// <param name="endDate">The end date (optional).</param>
     /// <param name="ct">The cancellation token.</param>
     /// <returns>A collection of domain entities.</returns>
-    public async Task<IEnumerable<DomainEntity>> GetDomainEntityByDateRangeAsync(DateTime startDate, DateTime? endDate, CancellationToken ct = default)
+    public async Task<IEnumerable<DomainEntity>> GetDomainEntityByDateRangeAsync(DateTime startDate, DateTime? endDate,
+        CancellationToken ct = default)
     {
-        return await _domainEntityRepository.GetAsync(r => r.Created >= startDate && r.Created <= (endDate ?? DateTime.UtcNow), ct);
+        return await _domainEntityRepository.GetAsync(
+            r => r.Created >= startDate && r.Created <= (endDate ?? DateTime.UtcNow), ct);
     }
 
     /// <summary>
-    /// Adds a new domain entity asynchronously.
+    ///     Adds a new domain entity asynchronously.
     /// </summary>
     /// <param name="objects">The collection of domain objects (optional).</param>
     /// <param name="ct">The cancellation token.</param>
     /// <returns>The added domain entity.</returns>
-    public async Task<DomainEntity> AddDomainEntityAsync(IEnumerable<DomainObject>? objects, CancellationToken ct = default)
+    public async Task<DomainEntity> AddDomainEntityAsync(IEnumerable<DomainObject>? objects,
+        CancellationToken ct = default)
     {
         var entity = new DomainEntity();
 
-        if(objects != null)
+        if (objects != null)
             entity.AddDomainObject(objects);
 
         _domainEntityRepository.Add(entity);
@@ -65,7 +68,7 @@ public sealed class DomainService(IDomainEntityRepository domainEntityRepository
     }
 
     /// <summary>
-    /// Adds or updates a domain object asynchronously.
+    ///     Adds or updates a domain object asynchronously.
     /// </summary>
     /// <param name="entityId">The entity identifier.</param>
     /// <param name="capabilityIdentifier">The capability identifier.</param>
@@ -73,7 +76,8 @@ public sealed class DomainService(IDomainEntityRepository domainEntityRepository
     /// <param name="value">The value.</param>
     /// <param name="ct">The cancellation token.</param>
     /// <returns>The added or updated domain object.</returns>
-    public async Task<DomainObject> AddOrUpdateDomainObjectAsync(Guid entityId, string capabilityIdentifier, string label, string value, CancellationToken ct = default)
+    public async Task<DomainObject> AddOrUpdateDomainObjectAsync(Guid entityId, string capabilityIdentifier,
+        string label, string value, CancellationToken ct = default)
     {
         var @object = new DomainObject(label, value, capabilityIdentifier);
         var entity = await _domainEntityRepository.GetAsync(entityId, ct);
@@ -88,7 +92,7 @@ public sealed class DomainService(IDomainEntityRepository domainEntityRepository
     }
 
     /// <summary>
-    /// Deletes a domain entity asynchronously.
+    ///     Deletes a domain entity asynchronously.
     /// </summary>
     /// <param name="entityId">The entity identifier.</param>
     /// <param name="ct">The cancellation token.</param>
@@ -97,26 +101,24 @@ public sealed class DomainService(IDomainEntityRepository domainEntityRepository
     {
         var entity = await _domainEntityRepository.GetAsync(entityId);
 
-        if (entity is not null)
-        {
-            _domainEntityRepository.Delete(entity);
-        }
+        if (entity is not null) _domainEntityRepository.Delete(entity);
 
         return await _domainEntityRepository.UnitOfWork.SaveEntitiesAsync(ct);
     }
 
     /// <summary>
-    /// Deletes a domain object asynchronously.
+    ///     Deletes a domain object asynchronously.
     /// </summary>
     /// <param name="entityId">The entity identifier.</param>
     /// <param name="label">The label.</param>
     /// <param name="capabilityIdentifier">The capability identifier (optional).</param>
     /// <param name="ct">The cancellation token.</param>
     /// <returns>True if the domain object is deleted, otherwise false.</returns>
-    public async Task<bool> DeleteDomainObjectAsync(Guid entityId, string label, string capabilityIdentifier, CancellationToken ct = default)
-    {            
+    public async Task<bool> DeleteDomainObjectAsync(Guid entityId, string label, string capabilityIdentifier,
+        CancellationToken ct = default)
+    {
         var entity = await _domainEntityRepository.GetAsync(entityId, ct);
-        
+
         if (entity is not null)
         {
             var query = entity.Objects.Where(ci => ci.Label == label).AsQueryable();
@@ -136,7 +138,7 @@ public sealed class DomainService(IDomainEntityRepository domainEntityRepository
     }
 
     /// <summary>
-    /// Updates a domain entity asynchronously.
+    ///     Updates a domain entity asynchronously.
     /// </summary>
     /// <param name="entity">The domain entity.</param>
     /// <param name="ct">The cancellation token.</param>

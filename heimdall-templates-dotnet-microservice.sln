@@ -7,6 +7,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{641C8D36-304
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Heimdall.Templates.DotNet.Microservice.Domain", "src\Heimdall.Templates.DotNet.Microservice.Domain\Heimdall.Templates.DotNet.Microservice.Domain.csproj", "{2BF0BF9D-C162-47D5-B756-430A9C8F1977}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Heimdall.Templates.DotNet.Microservice.Application", "src\Heimdall.Templates.DotNet.Microservice.Application\Heimdall.Templates.DotNet.Microservice.Application.csproj", "{A97347F5-60D9-4B5E-98C9-68C0A1DDB1F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Heimdall.Templates.DotNet.Microservice.Host.Api", "src\Heimdall.Templates.DotNet.Microservice.Host.Api\Heimdall.Templates.DotNet.Microservice.Host.Api.csproj", "{9C51A860-C5F2-494C-A09F-985A1D5F2B5B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Heimdall.Templates.DotNet.Microservice.Host.Worker", "src\Heimdall.Templates.DotNet.Microservice.Host.Worker\Heimdall.Templates.DotNet.Microservice.Host.Worker.csproj", "{8877F348-F0FE-415B-A252-F37D18FE65FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Heimdall.Templates.Dotnet.Microservice.Infrastructure", "src\Heimdall.Templates.Dotnet.Microservice.Infrastructure\Heimdall.Templates.Dotnet.Microservice.Infrastructure.csproj", "{2DDE6A33-FDBC-4E03-848B-5BD71AF939EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +25,22 @@ Global
 		{2BF0BF9D-C162-47D5-B756-430A9C8F1977}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2BF0BF9D-C162-47D5-B756-430A9C8F1977}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2BF0BF9D-C162-47D5-B756-430A9C8F1977}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A97347F5-60D9-4B5E-98C9-68C0A1DDB1F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A97347F5-60D9-4B5E-98C9-68C0A1DDB1F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A97347F5-60D9-4B5E-98C9-68C0A1DDB1F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A97347F5-60D9-4B5E-98C9-68C0A1DDB1F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C51A860-C5F2-494C-A09F-985A1D5F2B5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C51A860-C5F2-494C-A09F-985A1D5F2B5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C51A860-C5F2-494C-A09F-985A1D5F2B5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C51A860-C5F2-494C-A09F-985A1D5F2B5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8877F348-F0FE-415B-A252-F37D18FE65FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8877F348-F0FE-415B-A252-F37D18FE65FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8877F348-F0FE-415B-A252-F37D18FE65FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8877F348-F0FE-415B-A252-F37D18FE65FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DDE6A33-FDBC-4E03-848B-5BD71AF939EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DDE6A33-FDBC-4E03-848B-5BD71AF939EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DDE6A33-FDBC-4E03-848B-5BD71AF939EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DDE6A33-FDBC-4E03-848B-5BD71AF939EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

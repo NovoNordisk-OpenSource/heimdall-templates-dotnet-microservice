@@ -1,14 +1,7 @@
 namespace Heimdall.Templates.DotNet.Microservice.Application.Events.Domain;
 
-using AutoMapper;
-using BeHeroes.CodeOps.Abstractions.Events;
-using Heimdall.Templates.DotNet.Microservice.Domain.Events.Domain;
-using MediatR;
-using System.Threading;
-using System.Threading.Tasks;
-
 /// <summary>
-/// Represents an event handler for the <see cref="DomainEntityCreatedEvent"/> event.
+///     Represents an event handler for the <see cref="DomainEntityCreatedEvent" /> event.
 /// </summary>
 public sealed class DomainEntityCreatedEventHandler : IEventHandler<DomainEntityCreatedEvent>
 {
@@ -17,7 +10,7 @@ public sealed class DomainEntityCreatedEventHandler : IEventHandler<DomainEntity
     private readonly IMediator _mediator;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="DomainEntityCreatedEventHandler"/> class.
+    ///     Initializes a new instance of the <see cref="DomainEntityCreatedEventHandler" /> class.
     /// </summary>
     /// <param name="mapper">The AutoMapper instance.</param>
     /// <param name="mediator">The MediatR instance.</param>
@@ -28,7 +21,7 @@ public sealed class DomainEntityCreatedEventHandler : IEventHandler<DomainEntity
     }
 
     /// <summary>
-    /// Handles the <see cref="DomainEntityCreatedEvent"/> event.
+    ///     Handles the <see cref="DomainEntityCreatedEvent" /> event.
     /// </summary>
     /// <param name="event">The event to handle.</param>
     /// <param name="ct">The cancellation token.</param>

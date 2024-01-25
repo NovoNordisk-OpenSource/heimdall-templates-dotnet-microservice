@@ -1,7 +1,5 @@
 namespace Heimdall.Templates.DotNet.Microservice.Application.Telemetry;
 
-using Microsoft.Extensions.Logging;
-
 public static partial class Logs
 {
     [LoggerMessage(LogLevel.Information, "Starting the application with process id: {processId}.")]

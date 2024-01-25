@@ -1,17 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk.Worker">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>dotnet-Heimdall.Templates.DotNet.Microservice.Host.Worker-3f14bd7f-8a17-4677-a940-84b98df59222</UserSecretsId>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>dotnet-Heimdall.Templates.DotNet.Microservice.Host.Worker-3f14bd7f-8a17-4677-a940-84b98df59222</UserSecretsId>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Heimdall.Templates.Dotnet.Microservice.Infrastructure\Heimdall.Templates.Dotnet.Microservice.Infrastructure.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Heimdall.Templates.Dotnet.Microservice.Infrastructure\Heimdall.Templates.Dotnet.Microservice.Infrastructure.csproj"/>
+    </ItemGroup>
 </Project>

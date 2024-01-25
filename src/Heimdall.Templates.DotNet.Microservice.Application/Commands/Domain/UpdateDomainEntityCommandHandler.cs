@@ -1,23 +1,15 @@
 namespace Heimdall.Templates.DotNet.Microservice.Application.Commands.Domain;
 
-using BeHeroes.CodeOps.Abstractions.Aggregates;
-using BeHeroes.CodeOps.Abstractions.Commands;
-using Heimdall.Templates.DotNet.Microservice.Domain.Aggregates;
-using Heimdall.Templates.DotNet.Microservice.Domain.Services;
-using MediatR;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-
 /// <summary>
-/// Represents a command handler for updating a domain entity.
+///     Represents a command handler for updating a domain entity.
 /// </summary>
-public sealed class UpdateDomainEntityCommandHandler : ICommandHandler<UpdateDomainEntityCommand, DomainEntity>, ICommandHandler<UpdateDomainEntityCommand, IAggregateRoot>
+public sealed class UpdateDomainEntityCommandHandler : ICommandHandler<UpdateDomainEntityCommand, DomainEntity>,
+    ICommandHandler<UpdateDomainEntityCommand, IAggregateRoot>
 {
     private readonly IDomainService _domainService;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="UpdateDomainEntityCommandHandler"/> class.
+    ///     Initializes a new instance of the <see cref="UpdateDomainEntityCommandHandler" /> class.
     /// </summary>
     /// <param name="domainService">The domain service.</param>
     /// <exception cref="ArgumentNullException">Thrown when the domainService is null.</exception>
@@ -27,7 +19,7 @@ public sealed class UpdateDomainEntityCommandHandler : ICommandHandler<UpdateDom
     }
 
     /// <summary>
-    /// Handles the update domain entity command.
+    ///     Handles the update domain entity command.
     /// </summary>
     /// <param name="command">The update domain entity command.</param>
     /// <param name="ct">The cancellation token.</param>
@@ -37,12 +29,14 @@ public sealed class UpdateDomainEntityCommandHandler : ICommandHandler<UpdateDom
         return await _domainService.UpdateDomainEntityAsync(command.Entity, ct);
     }
 
-    async Task<IAggregateRoot> IRequestHandler<UpdateDomainEntityCommand, IAggregateRoot>.Handle(UpdateDomainEntityCommand request, CancellationToken ct)
+    async Task<IAggregateRoot> IRequestHandler<UpdateDomainEntityCommand, IAggregateRoot>.Handle(
+        UpdateDomainEntityCommand request, CancellationToken ct)
     {
         return await Handle(request, ct);
     }
 
-    async Task<IAggregateRoot> ICommandHandler<UpdateDomainEntityCommand, IAggregateRoot>.Handle(UpdateDomainEntityCommand request, CancellationToken ct)
+    async Task<IAggregateRoot> ICommandHandler<UpdateDomainEntityCommand, IAggregateRoot>.Handle(
+        UpdateDomainEntityCommand request, CancellationToken ct)
     {
         return await Handle(request, ct);
     }

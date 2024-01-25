@@ -1,17 +1,12 @@
 namespace Heimdall.Templates.Dotnet.Microservice.Infrastructure.EntityFramework.Configurations;
 
-using Heimdall.Templates.DotNet.Microservice.Domain.Aggregates;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-
 /// <summary>
-/// Represents the entity type configuration for the <see cref="DomainEntity"/> class.
+///     Represents the entity type configuration for the <see cref="DomainEntity" /> class.
 /// </summary>
 public class DomainEntityTypeConfiguration : IEntityTypeConfiguration<DomainEntity>
 {
     /// <summary>
-    /// Configures the entity type.
+    ///     Configures the entity type.
     /// </summary>
     /// <param name="builder">The entity type builder.</param>
     public void Configure(EntityTypeBuilder<DomainEntity> builder)
@@ -23,11 +18,11 @@ public class DomainEntityTypeConfiguration : IEntityTypeConfiguration<DomainEnti
         builder.ToTable("DomainEntity");
 
         builder.OwnsMany(
-        p => p.Objects, a =>
-        {
-            a.WithOwner().HasForeignKey("OwnerId");
-            a.Property<Guid>("Id");
-            a.HasKey("Id");
-        });
+            p => p.Objects, a =>
+            {
+                a.WithOwner().HasForeignKey("OwnerId");
+                a.Property<Guid>("Id");
+                a.HasKey("Id");
+            });
     }
 }

@@ -1,32 +1,20 @@
 namespace Heimdall.Templates.Dotnet.Microservice.Infrastructure.OpenTelemetry;
 
-using Microsoft.Identity.Client;
-using System.Net.Http.Headers;
-
 //TODO: Review & refactor merged code
-public class AuthorizationHeaderHandler : DelegatingHandler
+public class AuthorizationHeaderHandler(
+    HttpMessageHandler innerHandler,
+    AuthorizationEnvironmentOptions options =
+        AuthorizationEnvironmentOptions.ServicePrincipal)
+    : DelegatingHandler(innerHandler)
 {
     public enum TokenType
     {
         BearerTelemetry
     }
 
-    private readonly AuthorizationEnvironmentOptions _options;
-    private AuthenticationResult? _bearerTelemetryAuthenticationResult;
-    private AuthenticationResult? _bearerGraphAuthenticationResult;
     private static readonly TimeSpan MinimumValidityPeriod = TimeSpan.FromMinutes(2);
 
-    public AuthorizationHeaderHandler(
-        HttpMessageHandler innerHandler,
-        AuthorizationEnvironmentOptions options =
-            AuthorizationEnvironmentOptions.ServicePrincipal
-    )
-        : base(innerHandler)
-    {
-        _options = options;
-        _bearerTelemetryAuthenticationResult = null;
-        _bearerGraphAuthenticationResult = null;
-    }
+    private AuthenticationResult? _bearerTelemetryAuthenticationResult = null;
 
     protected override HttpResponseMessage Send(
         HttpRequestMessage request,
@@ -56,7 +44,7 @@ public class AuthorizationHeaderHandler : DelegatingHandler
                 var arcDataOpenTelemetryClientId = Environment.GetEnvironmentVariable(
                     RuntimeEnvVars.ArcDataOpenTelemetryClientIdEnvVarName
                 );
-                
+
                 if (arcDataOpenTelemetryClientId == null)
                     throw new ArgumentNullException(
                         $"Environment variable {RuntimeEnvVars.ArcDataOpenTelemetryClientIdEnvVarName} is null."
@@ -81,14 +69,10 @@ public class AuthorizationHeaderHandler : DelegatingHandler
 
         bool tokenExpiredOrAboutToExpire;
         if (authenticationResult != null)
-        {
             tokenExpiredOrAboutToExpire =
                 authenticationResult?.ExpiresOn < DateTimeOffset.UtcNow + MinimumValidityPeriod;
-        }
         else
-        {
             tokenExpiredOrAboutToExpire = true;
-        }
 
         Console.WriteLine(
             "=========================================================================================================="
@@ -96,8 +80,9 @@ public class AuthorizationHeaderHandler : DelegatingHandler
         if (tokenExpiredOrAboutToExpire)
         {
             Console.WriteLine($"[Scope: {scope}] Refreshing Scoped Azure AD token");
-            authenticationResult = GetAuthenticationResultAsync(_options, scope).Result;
+            authenticationResult = GetAuthenticationResultAsync(options, scope).Result;
         }
+
         if (authenticationResult == null)
         {
             Console.WriteLine("Running in NoAuth mode, returning bogus token.");
@@ -129,7 +114,7 @@ public class AuthorizationHeaderHandler : DelegatingHandler
         return authenticationResult?.AccessToken;
     }
 
-    private static async Task<AuthenticationResult> GetAuthenticationResultAsync(
+    private static async Task<AuthenticationResult?> GetAuthenticationResultAsync(
         AuthorizationEnvironmentOptions options,
         string scope
     )
@@ -145,7 +130,7 @@ public class AuthorizationHeaderHandler : DelegatingHandler
 
         IConfidentialClientApplication confidentialClientApplication;
         IManagedIdentityApplication managedIdApplication;
-        AuthenticationResult authenticationResult;
+        AuthenticationResult? authenticationResult;
 
         switch (options)
         {
@@ -159,12 +144,12 @@ public class AuthorizationHeaderHandler : DelegatingHandler
                 confidentialClientApplication = ConfidentialClientApplicationBuilder
                     .Create(clientId)
                     .WithClientSecret(clientSecret)
-                    .WithAuthority($"https://login.microsoftonline.com/{tenantId}", true)
+                    .WithAuthority($"https://login.microsoftonline.com/{tenantId}")
                     .WithExperimentalFeatures()
                     .Build();
 
                 authenticationResult = await confidentialClientApplication
-                    .AcquireTokenForClient(new string[] { $"{scope}/.default" })
+                    .AcquireTokenForClient(new[] { $"{scope}/.default" })
                     .ExecuteAsync()
                     .ConfigureAwait(false);
 
@@ -173,7 +158,7 @@ public class AuthorizationHeaderHandler : DelegatingHandler
             case AuthorizationEnvironmentOptions.SystemAssignedIdentity:
 
                 managedIdApplication = ManagedIdentityApplicationBuilder
-                    .Create(Microsoft.Identity.Client.AppConfig.ManagedIdentityId.SystemAssigned)
+                    .Create(ManagedIdentityId.SystemAssigned)
                     // Azure Container Apps does not work without this
                     .WithExperimentalFeatures()
                     .Build();
@@ -206,11 +191,11 @@ public class AuthorizationHeaderHandler : DelegatingHandler
                 confidentialClientApplication = ConfidentialClientApplicationBuilder
                     .Create(arcK8sclientId)
                     .WithCertificate(Certificate)
-                    .WithAuthority($"https://login.microsoftonline.com/{tenantId}", true)
+                    .WithAuthority($"https://login.microsoftonline.com/{tenantId}")
                     .Build();
 
                 authenticationResult = await confidentialClientApplication
-                    .AcquireTokenForClient(new string[] { $"{scope}/.default" })
+                    .AcquireTokenForClient(new[] { $"{scope}/.default" })
                     .ExecuteAsync()
                     .ConfigureAwait(false);
 
@@ -224,7 +209,7 @@ public class AuthorizationHeaderHandler : DelegatingHandler
                     );
 
                 managedIdApplication = ManagedIdentityApplicationBuilder
-                    .Create(Microsoft.Identity.Client.AppConfig.ManagedIdentityId.WithUserAssignedResourceId(uamiClientId))
+                    .Create(ManagedIdentityId.WithUserAssignedResourceId(uamiClientId))
                     // Azure Container Apps does not work without this
                     .WithExperimentalFeatures()
                     .Build();
