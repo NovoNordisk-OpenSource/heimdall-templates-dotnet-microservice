@@ -1,5 +1,3 @@
-using Microsoft.Extensions.Options;
-
 namespace Heimdall.Templates.Dotnet.Microservice.Infrastructure.Events.Domain;
 
 /// <summary>
