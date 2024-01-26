@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Options;
+
 namespace Heimdall.Templates.Dotnet.Microservice.Infrastructure.Events.Domain;
 
 /// <summary>
@@ -29,7 +31,8 @@ public class DomainEntityCreatedIntegrationEventHandler : IEventHandler<DomainEn
         // Increment custom metric
         _eventCounter.Add(1);
 
-        //TODO: Fetch topic from injected options
-        await _producer.ProduceAsync("topic", new Message<Ignore, IIntegrationEvent> { Value = notification }, ct);
+        // TODO: Implement and inject admin client to enable dynamic creation of topic if it does not exist @ https://github.com/confluentinc/confluent-kafka-dotnet/blob/b7b04fed82762c67c2841d7481eae59dee3e4e20/examples/AdminClient/Program.cs
+        // Produce message to notication.id topic (one topic for each integration event type)
+        await _producer.ProduceAsync(notification.Id, new Message<Ignore, IIntegrationEvent> { Value = notification }, ct);
     }
 }
