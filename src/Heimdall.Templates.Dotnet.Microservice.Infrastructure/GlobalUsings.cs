@@ -33,6 +33,7 @@ global using MediatR;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Design;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
+global using Microsoft.Extensions.Diagnostics.HealthChecks;
 global using Microsoft.Identity.Client;
 global using Microsoft.Identity.Client.AppConfig;
 global using Npgsql;

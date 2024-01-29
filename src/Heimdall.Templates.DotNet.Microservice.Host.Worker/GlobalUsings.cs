@@ -3,6 +3,8 @@
 global using BeHeroes.CodeOps.Infrastructure.Kafka;
 global using Heimdall.Templates.DotNet.Microservice.Application.Telemetry;
 global using Heimdall.Templates.Dotnet.Microservice.Infrastructure;
+global using Heimdall.Templates.Dotnet.Microservice.Infrastructure.HealthChecks;
+global using Heimdall.Templates.DotNet.Microservice.Host.Worker;
 global using OpenTelemetry;
 global using OpenTelemetry.Resources;
 global using OpenTelemetry.Trace;
