@@ -1,9 +1,7 @@
-
-
 var builder = WebApplication.CreateBuilder(args);
 
+// Fetch OTLP endpoint from configuration.
 var otlpEndpoint = builder.Configuration["OTLP_ENDPOINT_URL"];
-var otlpTenantId = builder.Configuration.GetSection("AzureAD")["TenantId"];
 
 // Add required services to the container.
 builder.Services.AddInfrastructure(builder.Configuration);
@@ -17,8 +15,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddHealthChecks();
 builder.Services.AddSwaggerGen();
 
-// Configure OpenTelemetry Traces, Metrics & Logs
+// Add OpenTelemetry dependencies
 builder.Services.AddOpenTelemetry()
+    // Configure OpenTelemetry Traces
     .WithTracing(builder =>
     {
         builder.AddSource(Service.Name)
@@ -27,63 +26,20 @@ builder.Services.AddOpenTelemetry()
                     Service.Name,
                     serviceVersion: Service.Version))
             .AddAspNetCoreInstrumentation()
-            .AddHttpClientInstrumentation();
-
-        if (otlpEndpoint != null)
-            builder.AddOtlpExporter(otlpOptions =>
-            {
-                otlpOptions.Endpoint = new Uri(otlpEndpoint);
-                otlpOptions.HttpClientFactory = () =>
-                {
-                    var innerHandler = new HttpClientHandler();
-                    var client = new HttpClient(
-                        new AuthorizationHeaderHandler(
-                            innerHandler,
-                            AuthorizationEnvironmentOptions.NoAuth
-                        )
-                    );
-
-                    client.Timeout = TimeSpan.FromMilliseconds(
-                        otlpOptions.TimeoutMilliseconds
-                    );
-
-                    return client;
-                };
-            });
-        else
-            builder.AddConsoleExporter();
+            .AddHttpClientInstrumentation()
+            .ConfigureTraceExporter(otlpEndpoint);
     })
+    // Configure OpenTelemetry Metrics
     .WithMetrics(builder =>
     {
         builder.AddMeter(Metrics.RequestMeter.Name)
+            .AddMeter(Metrics.EventMeter.Name)
             .AddMeter("Microsoft.AspNetCore.Hosting")
-            .AddMeter("Microsoft.AspNetCore.Server.Kestrel");
-
-        if (otlpEndpoint != null)
-            builder.AddOtlpExporter(otlpOptions =>
-            {
-                otlpOptions.Endpoint = new Uri(otlpEndpoint);
-                otlpOptions.HttpClientFactory = () =>
-                {
-                    var innerHandler = new HttpClientHandler();
-                    var client = new HttpClient(
-                        new AuthorizationHeaderHandler(
-                            innerHandler,
-                            AuthorizationEnvironmentOptions.NoAuth
-                        )
-                    );
-
-                    client.Timeout = TimeSpan.FromMilliseconds(
-                        otlpOptions.TimeoutMilliseconds
-                    );
-
-                    return client;
-                };
-            });
-        else
-            builder.AddConsoleExporter();
+            .AddMeter("Microsoft.AspNetCore.Server.Kestrel")
+            .ConfigureMeterExporter(otlpEndpoint);
     });
 
+// Configure OpenTelemetry Logs
 builder.Logging.AddOpenTelemetry(logging =>
 {
     logging.IncludeScopes = true;
@@ -92,29 +48,7 @@ builder.Logging.AddOpenTelemetry(logging =>
         .CreateDefault()
         .AddService(Service.Name);
 
-    if (otlpEndpoint != null)
-        logging.SetResourceBuilder(resourceBuilder).AddOtlpExporter(otlpOptions =>
-        {
-            otlpOptions.Endpoint = new Uri(otlpEndpoint);
-            otlpOptions.HttpClientFactory = () =>
-            {
-                var innerHandler = new HttpClientHandler();
-                var client = new HttpClient(
-                    new AuthorizationHeaderHandler(
-                        innerHandler,
-                        AuthorizationEnvironmentOptions.NoAuth
-                    )
-                );
-
-                client.Timeout = TimeSpan.FromMilliseconds(
-                    otlpOptions.TimeoutMilliseconds
-                );
-
-                return client;
-            };
-        });
-    else
-        logging.SetResourceBuilder(resourceBuilder).AddConsoleExporter();
+    logging.SetResourceBuilder(resourceBuilder).ConfigureLoggerExporter(otlpEndpoint);
 });
 
 var app = builder.Build();

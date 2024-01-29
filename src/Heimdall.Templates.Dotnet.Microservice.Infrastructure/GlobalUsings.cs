@@ -38,3 +38,6 @@ global using Microsoft.Identity.Client;
 global using Microsoft.Identity.Client.AppConfig;
 global using Npgsql;
 global using Metrics = Heimdall.Templates.DotNet.Microservice.Application.Telemetry.Metrics;
+global using OpenTelemetry.Trace;
+global using OpenTelemetry.Metrics;
+global using OpenTelemetry.Logs;
