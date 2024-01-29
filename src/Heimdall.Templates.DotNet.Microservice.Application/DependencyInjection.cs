@@ -12,14 +12,14 @@ public static class DependencyInjection
     /// <param name="configuration">The <see cref="IConfiguration" /> instance.</param>
     public static void AddApplication(this IServiceCollection services, IConfiguration configuration)
     {
-        //Framework dependencies
+        // Framework dependencies
         services.AddLogging();
 
-        //Upstream dependencies            
+        // Upstream dependencies            
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
-        //Application dependencies        
+        // Application dependencies        
         services.AddFacade();
         services.AddServices();
     }

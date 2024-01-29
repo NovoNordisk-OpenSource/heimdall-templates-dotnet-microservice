@@ -119,7 +119,7 @@ builder.Logging.AddOpenTelemetry(logging =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Add swagger if development mode.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -130,15 +130,22 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-// Add health checks
-app.MapHealthChecks("/healthz", new HealthCheckOptions
+// Add readiness health check to check EF Core DbContext is connected.
+app.MapHealthChecks("/healthz/readiness", new HealthCheckOptions
 {
+    Predicate = healthCheck => healthCheck.Tags.Contains("readiness"),   
     ResultStatusCodes =
     {
         [HealthStatus.Healthy] = StatusCodes.Status200OK,
         [HealthStatus.Degraded] = StatusCodes.Status200OK,
         [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
     }
+});
+
+// Add liveness health check to enable monitoring of application lifecycle.
+app.MapHealthChecks("/healthz/liveness", new HealthCheckOptions
+{
+    Predicate = _ => false
 });
 
 // Map controllers routes.

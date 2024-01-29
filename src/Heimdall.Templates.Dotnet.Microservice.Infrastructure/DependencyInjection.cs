@@ -13,12 +13,12 @@ public static class DependencyInjection
     /// <param name="configuration">The IConfiguration instance.</param>
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        //Upstream dependencies
+        // Upstream dependencies
         services.AddApplication(configuration);
         services.AddKafka(configuration);
         services.AddSecurityPolicies();
 
-        //Application dependencies
+        // Application dependencies
         services.AddApplicationContext(configuration);
         services.AddRepositories();
         services.AddStrategies();
@@ -59,7 +59,11 @@ public static class DependencyInjection
             if (dbContextOptions?.Value?.EnableAutoMigrations == true) context.Database.Migrate();
         });
 
+        // Add IUnitOfWork
         services.AddTransient<IUnitOfWork>(factory => factory.GetRequiredService<ApplicationContext>());
+
+        // Add EF Core Health Check
+        services.AddHealthChecks().AddDbContextCheck<ApplicationContext>(tags: ["readiness"]);
     }
 
     /// <summary>

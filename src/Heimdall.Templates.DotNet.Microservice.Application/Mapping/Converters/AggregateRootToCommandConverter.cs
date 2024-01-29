@@ -4,6 +4,7 @@ public class AggregateRootToCommandConverter : ITypeConverter<IAggregateRoot, IC
 {
     public ICommand<IAggregateRoot> Convert(IAggregateRoot source, ICommand<IAggregateRoot> destination, ResolutionContext context)
     {
+        // TODO: Finish mapping aggregate commands
         switch (source)
         {
             case DomainEntity entity:
