@@ -1,6 +1,4 @@
 // Create application builder
-using Heimdall.Templates.Dotnet.Microservice.Infrastructure.OpenTelemetry;
-
 var builder = Host.CreateApplicationBuilder(args);
 
 // Fetch OTLP endpoint from configuration.

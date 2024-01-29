@@ -3,18 +3,13 @@
 /// <summary>
 ///     Represents a strategy for consuming generic integration events from Kafka.
 /// </summary>
-public sealed class GenericIntegrationEventConsumptionStrategy : ConsumptionStrategy
+/// <remarks>
+///     Initializes a new instance of the <see cref="GenericIntegrationEventConsumptionStrategy" /> class.
+/// </remarks>
+/// <param name="mapper">The mapper used for object mapping.</param>
+/// <param name="applicationFacade">The application facade for executing commands.</param>
+public sealed class GenericIntegrationEventConsumptionStrategy(IMapper mapper, IApplicationFacade applicationFacade) : ConsumptionStrategy(mapper, applicationFacade)
 {
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="GenericIntegrationEventConsumptionStrategy" /> class.
-    /// </summary>
-    /// <param name="mapper">The mapper used for object mapping.</param>
-    /// <param name="applicationFacade">The application facade for executing commands.</param>
-    public GenericIntegrationEventConsumptionStrategy(IMapper mapper, IApplicationFacade applicationFacade) : base(
-        mapper, applicationFacade)
-    {
-    }
-
     /// <summary>
     ///     Applies the consumption strategy to the specified Kafka message.
     /// </summary>

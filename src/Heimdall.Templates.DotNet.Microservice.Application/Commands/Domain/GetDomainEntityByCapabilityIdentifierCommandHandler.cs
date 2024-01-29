@@ -3,16 +3,9 @@ namespace Heimdall.Templates.DotNet.Microservice.Application.Commands.Domain;
 /// <summary>
 ///     Command handler for retrieving domain entities by capability identifier.
 /// </summary>
-public sealed class
-    GetDomainEntityByCapabilityIdentifierCommandHandler : ICommandHandler<GetDomainEntityByCapabilityIdentifierCommand,
-    IEnumerable<DomainEntity>>
+public sealed class GetDomainEntityByCapabilityIdentifierCommandHandler(IDomainService domainService) : ICommandHandler<GetDomainEntityByCapabilityIdentifierCommand, IEnumerable<DomainEntity>>
 {
-    private readonly IDomainService _domainService;
-
-    public GetDomainEntityByCapabilityIdentifierCommandHandler(IDomainService domainService)
-    {
-        _domainService = domainService ?? throw new ArgumentNullException(nameof(domainService));
-    }
+    private readonly IDomainService _domainService = domainService ?? throw new ArgumentNullException(nameof(domainService));
 
     /// <summary>
     ///     Handles the command by retrieving domain entities based on the provided capability identifier.

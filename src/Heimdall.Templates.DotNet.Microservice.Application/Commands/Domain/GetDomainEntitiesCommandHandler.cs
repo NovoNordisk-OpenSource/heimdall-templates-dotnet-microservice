@@ -3,15 +3,9 @@ namespace Heimdall.Templates.DotNet.Microservice.Application.Commands.Domain;
 /// <summary>
 ///     Command handler for retrieving domain entities.
 /// </summary>
-public sealed class
-    GetDomainEntitiesCommandHandler : ICommandHandler<GetDomainEntitiesCommand, IEnumerable<DomainEntity>>
+public sealed class GetDomainEntitiesCommandHandler(IDomainService domainService) : ICommandHandler<GetDomainEntitiesCommand, IEnumerable<DomainEntity>>
 {
-    private readonly IDomainService _domainService;
-
-    public GetDomainEntitiesCommandHandler(IDomainService domainService)
-    {
-        _domainService = domainService ?? throw new ArgumentNullException(nameof(domainService));
-    }
+    private readonly IDomainService _domainService = domainService ?? throw new ArgumentNullException(nameof(domainService));
 
     /// <summary>
     ///     Handles the GetDomainEntitiesCommand by retrieving domain entities asynchronously.

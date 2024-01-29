@@ -3,27 +3,21 @@ namespace Heimdall.Templates.DotNet.Microservice.Host.Api.Controllers;
 /// <summary>
 ///     Represents a controller for managing domain entities.
 /// </summary>
+/// <remarks>
+///     Initializes a new instance of the <see cref="DomainController" /> class.
+/// </remarks>
+/// <param name="logger">The logger instance.</param>
+/// <param name="facade">The application facade instance.</param>
 [Route("api/[controller]")]
 [ApiController]
-public class DomainController : ControllerBase
+public class DomainController(ILogger<DomainController> logger, IApplicationFacade facade) : ControllerBase
 {
-    private readonly IApplicationFacade _facade;
+    private readonly IApplicationFacade _facade = facade;
 
-    private readonly ILogger<DomainController> _logger;
+    private readonly ILogger<DomainController> _logger = logger;
 
     private readonly Counter<int> _requestCounter = Metrics.RequestMeter.CreateCounter<int>("request.counter",
         description: "Counts the number of requests serviced by the controller");
-
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="DomainController" /> class.
-    /// </summary>
-    /// <param name="logger">The logger instance.</param>
-    /// <param name="facade">The application facade instance.</param>
-    public DomainController(ILogger<DomainController> logger, IApplicationFacade facade)
-    {
-        _logger = logger;
-        _facade = facade;
-    }
 
     /// <summary>
     ///     Gets all domain entities asynchronously.

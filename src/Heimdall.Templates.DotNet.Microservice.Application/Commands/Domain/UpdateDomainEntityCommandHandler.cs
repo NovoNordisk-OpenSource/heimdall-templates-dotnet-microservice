@@ -3,20 +3,14 @@ namespace Heimdall.Templates.DotNet.Microservice.Application.Commands.Domain;
 /// <summary>
 ///     Represents a command handler for updating a domain entity.
 /// </summary>
-public sealed class UpdateDomainEntityCommandHandler : ICommandHandler<UpdateDomainEntityCommand, DomainEntity>,
-    ICommandHandler<UpdateDomainEntityCommand, IAggregateRoot>
+/// <remarks>
+///     Initializes a new instance of the <see cref="UpdateDomainEntityCommandHandler" /> class.
+/// </remarks>
+/// <param name="domainService">The domain service.</param>
+/// <exception cref="ArgumentNullException">Thrown when the domainService is null.</exception>
+public sealed class UpdateDomainEntityCommandHandler(IDomainService domainService) : ICommandHandler<UpdateDomainEntityCommand, DomainEntity>, ICommandHandler<UpdateDomainEntityCommand, IAggregateRoot>
 {
-    private readonly IDomainService _domainService;
-
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="UpdateDomainEntityCommandHandler" /> class.
-    /// </summary>
-    /// <param name="domainService">The domain service.</param>
-    /// <exception cref="ArgumentNullException">Thrown when the domainService is null.</exception>
-    public UpdateDomainEntityCommandHandler(IDomainService domainService)
-    {
-        _domainService = domainService ?? throw new ArgumentNullException(nameof(domainService));
-    }
+    private readonly IDomainService _domainService = domainService ?? throw new ArgumentNullException(nameof(domainService));
 
     /// <summary>
     ///     Handles the update domain entity command.

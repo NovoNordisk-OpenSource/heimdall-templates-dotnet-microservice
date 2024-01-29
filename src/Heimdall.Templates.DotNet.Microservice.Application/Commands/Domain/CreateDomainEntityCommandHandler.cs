@@ -3,20 +3,14 @@ namespace Heimdall.Templates.DotNet.Microservice.Application.Commands.Domain;
 /// <summary>
 ///     Represents a command handler for creating a domain entity.
 /// </summary>
-public sealed class CreateDomainEntityCommandHandler : ICommandHandler<CreateDomainEntityCommand, DomainEntity>,
-    ICommandHandler<CreateDomainEntityCommand, IAggregateRoot>
+/// <remarks>
+///     Initializes a new instance of the <see cref="CreateDomainEntityCommandHandler" /> class.
+/// </remarks>
+/// <param name="domainService">The domain service.</param>
+/// <exception cref="ArgumentNullException">Thrown when the domainService is null.</exception>
+public sealed class CreateDomainEntityCommandHandler(IDomainService domainService) : ICommandHandler<CreateDomainEntityCommand, DomainEntity>, ICommandHandler<CreateDomainEntityCommand, IAggregateRoot>
 {
-    private readonly IDomainService _domainService;
-
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="CreateDomainEntityCommandHandler" /> class.
-    /// </summary>
-    /// <param name="domainService">The domain service.</param>
-    /// <exception cref="ArgumentNullException">Thrown when the domainService is null.</exception>
-    public CreateDomainEntityCommandHandler(IDomainService domainService)
-    {
-        _domainService = domainService ?? throw new ArgumentNullException(nameof(domainService));
-    }
+    private readonly IDomainService _domainService = domainService ?? throw new ArgumentNullException(nameof(domainService));
 
     /// <summary>
     ///     Handles the create domain entity command.

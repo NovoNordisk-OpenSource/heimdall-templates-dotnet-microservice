@@ -3,17 +3,12 @@ namespace Heimdall.Templates.Dotnet.Microservice.Infrastructure.EntityFramework.
 /// <summary>
 ///     Represents a repository for managing <see cref="DomainEntity" /> entities in the database.
 /// </summary>
-public class DomainEntityRepository : EntityFrameworkRepository<DomainEntity, ApplicationContext>,
-    IDomainEntityRepository
+/// <remarks>
+///     Initializes a new instance of the <see cref="DomainEntityRepository" /> class.
+/// </remarks>
+/// <param name="context">The application context.</param>
+public class DomainEntityRepository(ApplicationContext context) : EntityFrameworkRepository<DomainEntity, ApplicationContext>(context), IDomainEntityRepository
 {
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="DomainEntityRepository" /> class.
-    /// </summary>
-    /// <param name="context">The application context.</param>
-    public DomainEntityRepository(ApplicationContext context) : base(context)
-    {
-    }
-
     /// <summary>
     ///     Retrieves a collection of <see cref="DomainEntity" /> entities from the database asynchronously based on the
     ///     specified filter.

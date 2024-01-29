@@ -3,19 +3,14 @@ namespace Heimdall.Templates.DotNet.Microservice.Application.Commands.Domain;
 /// <summary>
 ///     Represents a command handler for deleting a domain entity.
 /// </summary>
-public sealed class DeleteDomainEntityCommandHandler : ICommandHandler<DeleteDomainEntityCommand, bool>
+/// <remarks>
+///     Initializes a new instance of the <see cref="DeleteDomainEntityCommandHandler" /> class.
+/// </remarks>
+/// <param name="domainService">The domain service.</param>
+/// <exception cref="ArgumentNullException">Thrown when the domainService is null.</exception>
+public sealed class DeleteDomainEntityCommandHandler(IDomainService domainService) : ICommandHandler<DeleteDomainEntityCommand, bool>
 {
-    private readonly IDomainService _domainService;
-
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="DeleteDomainEntityCommandHandler" /> class.
-    /// </summary>
-    /// <param name="domainService">The domain service.</param>
-    /// <exception cref="ArgumentNullException">Thrown when the domainService is null.</exception>
-    public DeleteDomainEntityCommandHandler(IDomainService domainService)
-    {
-        _domainService = domainService ?? throw new ArgumentNullException(nameof(domainService));
-    }
+    private readonly IDomainService _domainService = domainService ?? throw new ArgumentNullException(nameof(domainService));
 
     /// <summary>
     ///     Handles the delete domain entity command.

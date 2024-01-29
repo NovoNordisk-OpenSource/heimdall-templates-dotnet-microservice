@@ -3,22 +3,16 @@ namespace Heimdall.Templates.DotNet.Microservice.Application.Events.Domain;
 /// <summary>
 ///     Represents an event handler for the <see cref="DomainEntityCreatedEvent" /> event.
 /// </summary>
-public sealed class DomainEntityCreatedEventHandler : IEventHandler<DomainEntityCreatedEvent>
+/// <remarks>
+///     Initializes a new instance of the <see cref="DomainEntityCreatedEventHandler" /> class.
+/// </remarks>
+/// <param name="mapper">The AutoMapper instance.</param>
+/// <param name="mediator">The MediatR instance.</param>
+public sealed class DomainEntityCreatedEventHandler(IMapper mapper, IMediator mediator) : IEventHandler<DomainEntityCreatedEvent>
 {
-    private readonly IMapper _mapper;
+    private readonly IMapper _mapper = mapper;
 
-    private readonly IMediator _mediator;
-
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="DomainEntityCreatedEventHandler" /> class.
-    /// </summary>
-    /// <param name="mapper">The AutoMapper instance.</param>
-    /// <param name="mediator">The MediatR instance.</param>
-    public DomainEntityCreatedEventHandler(IMapper mapper, IMediator mediator)
-    {
-        _mapper = mapper;
-        _mediator = mediator;
-    }
+    private readonly IMediator _mediator = mediator;
 
     /// <summary>
     ///     Handles the <see cref="DomainEntityCreatedEvent" /> event.

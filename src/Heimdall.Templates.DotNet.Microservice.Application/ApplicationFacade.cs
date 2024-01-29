@@ -12,13 +12,10 @@ namespace Heimdall.Templates.DotNet.Microservice.Application;
 ///     By using the facade pattern, the application layer becomes more modular, maintainable, and easier to use, as the
 ///     clients don't need to be aware of the internal details and dependencies of the subsystem.
 /// </remarks>
-public sealed class ApplicationFacade : Facade, IApplicationFacade
+/// <remarks>
+///     Initializes a new instance of the <see cref="ApplicationFacade" /> class.
+/// </remarks>
+/// <param name="mediator">The mediator instance used for handling requests.</param>
+public sealed class ApplicationFacade(IMediator mediator) : Facade(mediator), IApplicationFacade
 {
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="ApplicationFacade" /> class.
-    /// </summary>
-    /// <param name="mediator">The mediator instance used for handling requests.</param>
-    public ApplicationFacade(IMediator mediator) : base(mediator)
-    {
-    }
 }
