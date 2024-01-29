@@ -5,6 +5,8 @@ services:
     image: confluentinc/cp-zookeeper:7.5.3
     hostname: zoo
     container_name: zoo
+    networks:
+      - heimdall
     ports:
       - "2181:2181"
     environment:
@@ -16,6 +18,8 @@ services:
     image: confluentinc/cp-kafka:7.5.3
     hostname: kafka
     container_name: kafka
+    networks:
+      - heimdall
     ports:
       - "9092:9092"
       - "29092:29092"
@@ -44,6 +48,8 @@ services:
     depends_on:
       - zoo
       - kafka
+    networks:
+      - heimdall
     ports:
       - "8081:8081"
     environment:
@@ -55,6 +61,8 @@ services:
     image: confluentinc/cp-kafka:7.5.3
     depends_on:
       - kafka
+    networks:
+      - heimdall
     entrypoint: [ '/bin/sh', '-c' ]
     command: |
       "
@@ -68,3 +76,8 @@ services:
       echo -e 'Successfully created the following topics:'
       kafka-topics --bootstrap-server kafka:29092 --list
       "
+
+networks:
+  heimdall:
+    name: heimdall
+    external: true

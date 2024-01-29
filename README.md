@@ -23,4 +23,6 @@ Once migration completes run: docker-compose stop database
 
 
 ## Start applications
-To bootstrap application run the following command: docker-compose up database host.api
+To bootstrap application without Kafka-support (Worker + Kafka stuff) run the following command: docker-compose up database host.api
+
+To bootstrap application with Kafka-support (Worker + Kafka stuff) run the following command: docker-compose -f docker-compose.kafka.yml -f docker-compose.yml up
