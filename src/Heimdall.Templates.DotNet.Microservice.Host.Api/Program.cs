@@ -1,4 +1,4 @@
-using OpenTelemetry.Trace;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,13 +7,15 @@ var otlpTenantId = builder.Configuration.GetSection("AzureAD")["TenantId"];
 
 // Add required services to the container.
 builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApi(builder.Configuration)
     .EnableTokenAcquisitionToCallDownstreamApi()
     .AddMicrosoftGraph(builder.Configuration.GetSection("GraphBeta"))
     .AddInMemoryTokenCaches();
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddHealthChecks();
+builder.Services.AddSwaggerGen();
 
 // Configure OpenTelemetry Traces, Metrics & Logs
 builder.Services.AddOpenTelemetry()
@@ -115,9 +117,6 @@ builder.Logging.AddOpenTelemetry(logging =>
         logging.SetResourceBuilder(resourceBuilder).AddConsoleExporter();
 });
 
-// Add controllers.
-builder.Services.AddControllers();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -130,6 +129,17 @@ if (app.Environment.IsDevelopment())
         options.RoutePrefix = string.Empty;
     });
 }
+
+// Add health checks
+app.MapHealthChecks("/healthz", new HealthCheckOptions
+{
+    ResultStatusCodes =
+    {
+        [HealthStatus.Healthy] = StatusCodes.Status200OK,
+        [HealthStatus.Degraded] = StatusCodes.Status200OK,
+        [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
+    }
+});
 
 // Map controllers routes.
 app.MapControllers();

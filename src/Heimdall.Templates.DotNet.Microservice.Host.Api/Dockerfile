@@ -11,7 +11,7 @@ COPY ./ ./build/
 WORKDIR /build
 
 #Install the nuget credential provider
-RUN apt-get update && apt-get install -y locales && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
+RUN apt-get update && apt-get install -y locales curl && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 RUN dpkg-reconfigure --frontend=noninteractive locales && update-locale LANG=en_US.UTF-8
 RUN wget -qO- https://raw.githubusercontent.com/Microsoft/artifacts-credprovider/master/helpers/installcredprovider.sh | bash
 
@@ -31,12 +31,17 @@ RUN dotnet publish -c Release -o /build/out Heimdall.Templates.DotNet.Microservi
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 
+#Expose port 54323
 EXPOSE 54323
 
+#Set environment variables
 ENV ASPNETCORE_URLS="http://*:54323"
 
 #Copy binaries from publish container to final container
 COPY --from=build-env /build/out .
+
+#Setup healthcheck
+HEALTHCHECK CMD curl --fail http://localhost:54323/healthz || exit
 
 #Run dotnet executable
 ENTRYPOINT ["dotnet", "Heimdall.Templates.DotNet.Microservice.Host.Api.dll"]

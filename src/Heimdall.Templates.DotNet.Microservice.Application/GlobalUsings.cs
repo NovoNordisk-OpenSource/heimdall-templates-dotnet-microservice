@@ -15,6 +15,8 @@ global using Heimdall.Templates.DotNet.Microservice.Domain.Aggregates;
 global using Heimdall.Templates.DotNet.Microservice.Domain.Events.Domain;
 global using Heimdall.Templates.DotNet.Microservice.Domain.Services;
 global using Heimdall.Templates.DotNet.Microservice.Domain.ValueObjects;
+global using Heimdall.Templates.DotNet.Microservice.Application.Commands.Domain;
+global using Heimdall.Templates.DotNet.Microservice.Application.Mapping.Converters;
 global using MediatR;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
