@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  database.migration.runner:
+    image: mcr.microsoft.com/dotnet/sdk:8.0
+    networks:
+      - heimdall
+    volumes:
+      - ./:/
+    command: 
+      - dotnet tool install --global dotnet-ef 
+      - dotnet ef database update --project ./src/Heimdall.Templates.Dotnet.Microservice.Infrastructure/Heimdall.Templates.Dotnet.Microservice.Infrastructure.csproj --startup-project ./src/Heimdall.Templates.DotNet.Microservice.Host.Api/Heimdall.Templates.DotNet.Microservice.Host.Api.csproj --context ApplicationContext
+
+networks:
+  heimdall:
+    name: heimdall
+    external: true
