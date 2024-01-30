@@ -4,7 +4,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <UserSecretsId>dotnet-Heimdall.Templates.DotNet.Microservice.Host.Worker-3f14bd7f-8a17-4677-a940-84b98df59222</UserSecretsId>
+        <UserSecretsId>9dc5329c-c0b6-4f90-8232-610672133681</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>

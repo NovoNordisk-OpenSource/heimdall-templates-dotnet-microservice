@@ -9,8 +9,7 @@ public static class DependencyInjection
     ///     Configures the application layer dependencies.
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection" /> to add the dependencies to.</param>
-    /// <param name="configuration">The <see cref="IConfiguration" /> instance.</param>
-    public static void AddApplication(this IServiceCollection services, IConfiguration configuration)
+    public static void AddApplication(this IServiceCollection services)
     {
         // Framework dependencies
         services.AddLogging();

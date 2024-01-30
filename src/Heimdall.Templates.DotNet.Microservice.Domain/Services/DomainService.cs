@@ -25,8 +25,7 @@ public sealed class DomainService(IDomainEntityRepository domainEntityRepository
     /// <param name="capabilityIdentifier">The capability identifier.</param>
     /// <param name="ct">The cancellation token.</param>
     /// <returns>A collection of domain entities.</returns>
-    public async Task<IEnumerable<DomainEntity>> GetDomainEntityByCapabilityIdentifierAsync(string capabilityIdentifier,
-        CancellationToken ct = default)
+    public async Task<IEnumerable<DomainEntity>> GetDomainEntityByCapabilityIdentifierAsync(string capabilityIdentifier, CancellationToken ct = default)
     {
         return await _domainEntityRepository.GetAsync(
             r => r.Objects.Any(ci => ci.CapabilityIdentifier == capabilityIdentifier), ct);
@@ -39,8 +38,7 @@ public sealed class DomainService(IDomainEntityRepository domainEntityRepository
     /// <param name="endDate">The end date (optional).</param>
     /// <param name="ct">The cancellation token.</param>
     /// <returns>A collection of domain entities.</returns>
-    public async Task<IEnumerable<DomainEntity>> GetDomainEntityByDateRangeAsync(DateTime startDate, DateTime? endDate,
-        CancellationToken ct = default)
+    public async Task<IEnumerable<DomainEntity>> GetDomainEntityByDateRangeAsync(DateTime startDate, DateTime? endDate, CancellationToken ct = default)
     {
         return await _domainEntityRepository.GetAsync(
             r => r.Created >= startDate && r.Created <= (endDate ?? DateTime.UtcNow), ct);
@@ -52,8 +50,7 @@ public sealed class DomainService(IDomainEntityRepository domainEntityRepository
     /// <param name="objects">The collection of domain objects (optional).</param>
     /// <param name="ct">The cancellation token.</param>
     /// <returns>The added domain entity.</returns>
-    public async Task<DomainEntity> AddDomainEntityAsync(IEnumerable<DomainObject>? objects,
-        CancellationToken ct = default)
+    public async Task<DomainEntity> AddDomainEntityAsync(IEnumerable<DomainObject>? objects, CancellationToken ct = default)
     {
         var entity = new DomainEntity();
 
@@ -76,8 +73,7 @@ public sealed class DomainService(IDomainEntityRepository domainEntityRepository
     /// <param name="value">The value.</param>
     /// <param name="ct">The cancellation token.</param>
     /// <returns>The added or updated domain object.</returns>
-    public async Task<DomainObject> AddOrUpdateDomainObjectAsync(Guid entityId, string capabilityIdentifier,
-        string label, string value, CancellationToken ct = default)
+    public async Task<DomainObject> AddOrUpdateDomainObjectAsync(Guid entityId, string capabilityIdentifier, string label, string value, CancellationToken ct = default)
     {
         var @object = new DomainObject(label, value, capabilityIdentifier);
         var entity = await _domainEntityRepository.GetAsync(entityId, ct);
@@ -114,8 +110,7 @@ public sealed class DomainService(IDomainEntityRepository domainEntityRepository
     /// <param name="capabilityIdentifier">The capability identifier (optional).</param>
     /// <param name="ct">The cancellation token.</param>
     /// <returns>True if the domain object is deleted, otherwise false.</returns>
-    public async Task<bool> DeleteDomainObjectAsync(Guid entityId, string label, string capabilityIdentifier,
-        CancellationToken ct = default)
+    public async Task<bool> DeleteDomainObjectAsync(Guid entityId, string label, string? capabilityIdentifier, CancellationToken ct = default)
     {
         var entity = await _domainEntityRepository.GetAsync(entityId, ct);
 

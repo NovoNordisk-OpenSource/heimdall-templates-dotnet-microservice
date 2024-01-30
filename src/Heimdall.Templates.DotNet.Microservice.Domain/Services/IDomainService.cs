@@ -20,8 +20,7 @@ public interface IDomainService : IService
     /// <param name="capabilityIdentifier">The capability identifier.</param>
     /// <param name="ct">The cancellation token.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the collection of domain entities.</returns>
-    Task<IEnumerable<DomainEntity>> GetDomainEntityByCapabilityIdentifierAsync(string capabilityIdentifier,
-        CancellationToken ct = default);
+    Task<IEnumerable<DomainEntity>> GetDomainEntityByCapabilityIdentifierAsync(string capabilityIdentifier, CancellationToken ct = default);
 
     /// <summary>
     ///     Retrieves domain entities by date range.
@@ -30,8 +29,7 @@ public interface IDomainService : IService
     /// <param name="endDate">The end date.</param>
     /// <param name="ct">The cancellation token.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the collection of domain entities.</returns>
-    Task<IEnumerable<DomainEntity>> GetDomainEntityByDateRangeAsync(DateTime startDate, DateTime? endDate,
-        CancellationToken ct = default);
+    Task<IEnumerable<DomainEntity>> GetDomainEntityByDateRangeAsync(DateTime startDate, DateTime? endDate, CancellationToken ct = default);
 
     /// <summary>
     ///     Adds a new domain entity.
@@ -72,8 +70,7 @@ public interface IDomainService : IService
     ///     A task that represents the asynchronous operation. The task result contains the added or updated domain
     ///     object.
     /// </returns>
-    Task<DomainObject> AddOrUpdateDomainObjectAsync(Guid entityId, string capabilityIdentifier, string label,
-        string value, CancellationToken ct = default);
+    Task<DomainObject> AddOrUpdateDomainObjectAsync(Guid entityId, string capabilityIdentifier, string label, string value, CancellationToken ct = default);
 
     /// <summary>
     ///     Deletes a domain object associated with a domain entity.
@@ -86,6 +83,5 @@ public interface IDomainService : IService
     ///     A task that represents the asynchronous operation. The task result indicates whether the deletion was
     ///     successful.
     /// </returns>
-    Task<bool> DeleteDomainObjectAsync(Guid entityId, string label, string capabilityIdentifier,
-        CancellationToken ct = default);
+    Task<bool> DeleteDomainObjectAsync(Guid entityId, string label, string? capabilityIdentifier, CancellationToken ct = default);
 }

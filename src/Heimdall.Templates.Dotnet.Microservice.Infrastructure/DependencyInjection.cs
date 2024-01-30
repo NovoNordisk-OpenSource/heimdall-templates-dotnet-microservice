@@ -14,7 +14,7 @@ public static class DependencyInjection
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         // Upstream dependencies
-        services.AddApplication(configuration);
+        services.AddApplication();
         services.AddKafka(configuration);
         services.AddSecurityPolicies();
 
