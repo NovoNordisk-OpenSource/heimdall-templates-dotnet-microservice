@@ -12,9 +12,6 @@ public class ServiceProviderFixture : IDisposable
 
         services.AddInfrastructure(_configFixture.Configuration);
 
-        services.AddTransient<ServiceFactory>(p => p.GetService);
-        services.AddTransient<IMediator>(p => new Mediator(p.GetService<ServiceFactory>()));
-
         Provider = services.BuildServiceProvider();
     }
 
