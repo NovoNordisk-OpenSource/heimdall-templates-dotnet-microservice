@@ -13,8 +13,7 @@ public sealed class GetDomainEntitiesCommandHandler(IDomainService domainService
     /// <param name="command">The GetDomainEntitiesCommand.</param>
     /// <param name="ct">The cancellation token.</param>
     /// <returns>A collection of domain entities.</returns>
-    public async Task<IEnumerable<DomainEntity>> Handle(GetDomainEntitiesCommand command,
-        CancellationToken ct = default)
+    public async Task<IEnumerable<DomainEntity>> Handle(GetDomainEntitiesCommand command, CancellationToken ct = default)
     {
         return await _domainService.GetDomainEntitiesAsync(ct);
     }
