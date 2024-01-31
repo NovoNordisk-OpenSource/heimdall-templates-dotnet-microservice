@@ -39,6 +39,7 @@ global using Metrics = Heimdall.Templates.DotNet.Microservice.Application.Teleme
 global using OpenTelemetry.Trace;
 global using OpenTelemetry.Metrics;
 global using OpenTelemetry.Logs;
+global using System.ComponentModel.DataAnnotations;
 global using System.Diagnostics.Metrics;
 global using System.Linq.Expressions;
 global using System.Net.Http.Headers;

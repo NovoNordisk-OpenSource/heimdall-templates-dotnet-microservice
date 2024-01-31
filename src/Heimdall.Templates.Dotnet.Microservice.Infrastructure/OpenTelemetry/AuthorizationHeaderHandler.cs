@@ -2,13 +2,15 @@ namespace Heimdall.Templates.Dotnet.Microservice.Infrastructure.OpenTelemetry;
 /// <summary>
 /// Represents a message handler that adds an authorization header to outgoing HTTP requests for telemetry purposes.
 /// </summary>
-public class AuthorizationHeaderHandler(HttpMessageHandler innerHandler, MicrosoftIdentityOptions identityOptions, AuthorizationOptions options = AuthorizationOptions.ServicePrincipal) : DelegatingHandler(innerHandler)
+public class AuthorizationHeaderHandler(HttpMessageHandler innerHandler, MicrosoftIdentityOptions identityOptions, OpenTelemetryExporterOptions otlpExporterOptions, AuthorizationOptions options = AuthorizationOptions.ServicePrincipal) : DelegatingHandler(innerHandler)
 {
     private static readonly TimeSpan MinimumValidityPeriod = TimeSpan.FromMinutes(2);
 
     private AuthenticationResult? _bearerTelemetryAuthenticationResult = null;
 
     private MicrosoftIdentityOptions _identityOptions = identityOptions;
+
+    private OpenTelemetryExporterOptions _otlpExporterOptions = otlpExporterOptions;
 
     protected override HttpResponseMessage Send(HttpRequestMessage request, CancellationToken cancellationToken)
     {       
@@ -24,11 +26,9 @@ public class AuthorizationHeaderHandler(HttpMessageHandler innerHandler, Microso
 
     private string? GetAccessToken(string tokenType)
     {
-        //TODO: OTLP_CLIENT_ID is not set in the environment variables. It should be read from the configuration system. This is a temporary workaround.
-        //TODO: Do we really need this scope or was this only for SystemAssignedIdentityWithCertificate?
         var scope = tokenType switch
         {
-            Constants.Bearer => Environment.GetEnvironmentVariable("OTLP_CLIENT_ID") ?? throw new ArgumentNullException($"OTLP_CLIENT_ID is null."),
+            Constants.Bearer => _otlpExporterOptions.ClientId ?? throw new ArgumentNullException($"{_otlpExporterOptions.ClientId} is null."),
             _ => throw new ArgumentOutOfRangeException(nameof(tokenType), tokenType, null),
         };
 

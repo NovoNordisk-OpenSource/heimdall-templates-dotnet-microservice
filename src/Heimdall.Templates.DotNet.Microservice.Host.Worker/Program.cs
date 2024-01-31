@@ -2,7 +2,7 @@
 var builder = Host.CreateApplicationBuilder(args);
 
 // Fetch OTLP endpoint from configuration.
-var otlpEndpoint = builder.Configuration["OTLP_ENDPOINT_URL"];
+var otlpExporterOptions = builder.Configuration.GetSection("OpenTelemetryExporter").Get<OpenTelemetryExporterOptions>() ?? new OpenTelemetryExporterOptions();
 
 // Fetch Microsoft Identity options from configuration.
 var microsoftIdentityOptions = builder.Configuration.GetSection("AzureAd").Get<MicrosoftIdentityOptions>() ?? new MicrosoftIdentityOptions();
@@ -27,14 +27,14 @@ builder.Services.AddOpenTelemetry()
                 resource.AddService(
                     Service.Name,
                     serviceVersion: Service.Version))
-            .ConfigureTraceExporter(otlpEndpoint, microsoftIdentityOptions);
+            .ConfigureTraceExporter(microsoftIdentityOptions, otlpExporterOptions);
     })
     // Configure OpenTelemetry Metrics
     .WithMetrics(builder =>
     {
         builder.AddMeter(Metrics.RequestMeter.Name)
             .AddMeter(Metrics.EventMeter.Name)
-            .ConfigureMeterExporter(otlpEndpoint, microsoftIdentityOptions);
+            .ConfigureMeterExporter(microsoftIdentityOptions, otlpExporterOptions);
     });
 
 // Configure OpenTelemetry Logs
@@ -46,7 +46,7 @@ builder.Logging.AddOpenTelemetry(logging =>
         .CreateDefault()
         .AddService(Service.Name);
 
-    logging.SetResourceBuilder(resourceBuilder).ConfigureLoggerExporter(otlpEndpoint, microsoftIdentityOptions);
+    logging.SetResourceBuilder(resourceBuilder).ConfigureLoggerExporter(microsoftIdentityOptions, otlpExporterOptions);
 });
 
 // Build application
