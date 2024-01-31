@@ -1,4 +1,4 @@
-﻿namespace Heimdall.Templates.DotNet.Microservice.Application.Mapping.Converters;
+﻿namespace Heimdall.Templates.DotNet.Microservice.Application.Mapping.Converters.Domain;
 
 public class IIntegrationEventToDomainEntityConverter(IMapper mapper) : ITypeConverter<IIntegrationEvent, DomainEntity>
 {
