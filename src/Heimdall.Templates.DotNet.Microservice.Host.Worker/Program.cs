@@ -47,10 +47,13 @@ builder.Logging.AddOpenTelemetry(logging =>
 });
 
 // Build application
-var host = builder.Build();
+var app = builder.Build();
 
+// Get logger to log process id
+var logger = app.Services.GetRequiredService<ILogger<Program>>();
+       
 // Log the process id.
-// app.Logger.LogStarting(Process.GetCurrentProcess().Id);
+logger.LogStarting(Environment.ProcessId);
 
 // Start the application.
-host.Run();
+app.Run();

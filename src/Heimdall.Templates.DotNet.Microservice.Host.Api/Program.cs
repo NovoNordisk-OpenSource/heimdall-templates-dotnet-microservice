@@ -52,7 +52,7 @@ builder.Logging.AddOpenTelemetry(logging =>
     logging.SetResourceBuilder(resourceBuilder).ConfigureLoggerExporter(otlpEndpoint);
 });
 
-// Build host
+// Build application
 var app = builder.Build();
 
 // Add swagger if development mode.
@@ -88,7 +88,7 @@ app.MapHealthChecks("/healthz/liveness", new HealthCheckOptions
 app.MapControllers();
 
 // Log the process id.
-app.Logger.LogStarting(Process.GetCurrentProcess().Id);
+app.Logger.LogStarting(Environment.ProcessId);
 
 // Start the application.
 app.Run();
