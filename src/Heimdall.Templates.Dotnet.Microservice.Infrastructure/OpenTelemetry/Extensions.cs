@@ -10,8 +10,9 @@ public static class Extensions
     /// </summary>
     /// <param name="builder">The TracerProviderBuilder instance.</param>
     /// <param name="otlpEndpoint">The OTLP endpoint URL.</param>
+    /// <param name="identityOptions">The MicrosoftIdentityOptions options.</param>
     /// <returns>The TracerProviderBuilder instance.</returns>
-    public static TracerProviderBuilder ConfigureTraceExporter(this TracerProviderBuilder builder, string? otlpEndpoint)
+    public static TracerProviderBuilder ConfigureTraceExporter(this TracerProviderBuilder builder, string? otlpEndpoint, MicrosoftIdentityOptions identityOptions)
     {
         if (!string.IsNullOrEmpty(otlpEndpoint))
             builder.AddOtlpExporter(otlpOptions =>
@@ -23,7 +24,8 @@ public static class Extensions
                     var client = new HttpClient(
                         new AuthorizationHeaderHandler(
                             innerHandler,
-                            AuthorizationEnvironmentOptions.NoAuth
+                            identityOptions,
+                            AuthorizationOptions.NoAuth
                         )
                     )
                     {
@@ -44,8 +46,9 @@ public static class Extensions
     /// </summary>
     /// <param name="builder">The MeterProviderBuilder instance.</param>
     /// <param name="otlpEndpoint">The OTLP endpoint URL.</param>
+    /// <param name="identityOptions">The MicrosoftIdentityOptions options.</param>
     /// <returns>The MeterProviderBuilder instance.</returns>
-    public static MeterProviderBuilder ConfigureMeterExporter(this MeterProviderBuilder builder, string? otlpEndpoint)
+    public static MeterProviderBuilder ConfigureMeterExporter(this MeterProviderBuilder builder, string? otlpEndpoint, MicrosoftIdentityOptions identityOptions)
     {
         if (!string.IsNullOrEmpty(otlpEndpoint))
             builder.AddOtlpExporter(otlpOptions =>
@@ -57,7 +60,8 @@ public static class Extensions
                     var client = new HttpClient(
                         new AuthorizationHeaderHandler(
                             innerHandler,
-                            AuthorizationEnvironmentOptions.NoAuth
+                            identityOptions,
+                            AuthorizationOptions.NoAuth
                         )
                     )
                     {
@@ -78,8 +82,9 @@ public static class Extensions
     /// </summary>
     /// <param name="options">The OpenTelemetryLoggerOptions instance.</param>
     /// <param name="otlpEndpoint">The OTLP endpoint URL.</param>
+    /// <param name="identityOptions">The MicrosoftIdentityOptions options.</param>
     /// <returns>The OpenTelemetryLoggerOptions instance.</returns>
-    public static OpenTelemetryLoggerOptions ConfigureLoggerExporter(this OpenTelemetryLoggerOptions options, string? otlpEndpoint)
+    public static OpenTelemetryLoggerOptions ConfigureLoggerExporter(this OpenTelemetryLoggerOptions options, string? otlpEndpoint, MicrosoftIdentityOptions identityOptions)
     {
         if (!string.IsNullOrEmpty(otlpEndpoint))
             options.AddOtlpExporter(otlpOptions =>
@@ -91,7 +96,8 @@ public static class Extensions
                     var client = new HttpClient(
                         new AuthorizationHeaderHandler(
                             innerHandler,
-                            AuthorizationEnvironmentOptions.NoAuth
+                            identityOptions,
+                            AuthorizationOptions.NoAuth
                         )
                     )
                     {

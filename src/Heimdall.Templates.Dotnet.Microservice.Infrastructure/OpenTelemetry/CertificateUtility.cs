@@ -1,13 +1,14 @@
 namespace Heimdall.Templates.Dotnet.Microservice.Infrastructure.OpenTelemetry;
 
-//TODO: Review & refactor merged code
 public static class CertificateUtility
 {
     public static (X509Certificate2 Certificate, RSA PrivateKey) ExtractCert(string certObj)
     {
-        var data = Convert.FromBase64String(certObj);
         X509Certificate2 certificate;
         RSA privateKey;
+
+        var data = Convert.FromBase64String(certObj);
+        
         try
         {
             (certificate, privateKey) = DecodePkcs12(data, "");
@@ -32,6 +33,7 @@ public static class CertificateUtility
                 password,
                 X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet
             );
+
             privateKey = certificate.GetRSAPrivateKey();
         }
         catch (Exception e)
@@ -39,7 +41,8 @@ public static class CertificateUtility
             throw new Exception("Failed to decode PKCS#12 certificate.", e);
         }
 
-        if (privateKey == null) throw new Exception("PKCS#12 certificate must contain an RSA private key.");
+        if (privateKey == null) 
+            throw new Exception("PKCS#12 certificate must contain an RSA private key.");
 
         return (certificate, privateKey);
     }

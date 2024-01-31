@@ -33,6 +33,7 @@ global using Microsoft.Extensions.Diagnostics.HealthChecks;
 global using Microsoft.Extensions.Options;
 global using Microsoft.Identity.Client;
 global using Microsoft.Identity.Client.AppConfig;
+global using Microsoft.Identity.Web;
 global using Npgsql;
 global using Metrics = Heimdall.Templates.DotNet.Microservice.Application.Telemetry.Metrics;
 global using OpenTelemetry.Trace;

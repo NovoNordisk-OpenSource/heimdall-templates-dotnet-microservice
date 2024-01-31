@@ -1,11 +1,12 @@
+/// <summary>
+/// Represents the available options for authorization in OpenTelemetry.
+/// </summary>
 namespace Heimdall.Templates.Dotnet.Microservice.Infrastructure.OpenTelemetry;
 
-//TODO: Review & refactor merged code
-public enum AuthorizationEnvironmentOptions
+public enum AuthorizationOptions
 {
     NoAuth,
     ServicePrincipal,
     SystemAssignedIdentity,
-    SystemAssignedIdentityWithCertificate,
     UserAssignedIdentity
 }
