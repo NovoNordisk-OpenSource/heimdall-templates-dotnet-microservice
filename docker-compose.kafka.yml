@@ -41,23 +41,7 @@ services:
     depends_on:
       - zoo
 
-  kafka-schema-registry:
-    image: confluentinc/cp-schema-registry:7.5.3
-    hostname: kafka-schema-registry
-    container_name: kafka-schema-registry
-    depends_on:
-      - zoo
-      - kafka
-    networks:
-      - heimdall
-    ports:
-      - "8081:8081"
-    environment:
-      SCHEMA_REGISTRY_HOST_NAME: kafka-schema-registry
-      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'PLAINTEXT://kafka:19092'
-      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
-
-  init-kafka:
+  kafka-topic-runner:
     image: confluentinc/cp-kafka:7.5.3
     depends_on:
       - kafka
@@ -76,6 +60,22 @@ services:
       echo -e 'Successfully created the following topics:'
       kafka-topics --bootstrap-server kafka:29092 --list
       "
+
+  kafka-schema-registry:
+    image: confluentinc/cp-schema-registry:7.5.3
+    hostname: kafka-schema-registry
+    container_name: kafka-schema-registry
+    depends_on:
+      - zoo
+      - kafka
+    networks:
+      - heimdall
+    ports:
+      - "8081:8081"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: kafka-schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'PLAINTEXT://kafka:19092'
+      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
 
 networks:
   heimdall:

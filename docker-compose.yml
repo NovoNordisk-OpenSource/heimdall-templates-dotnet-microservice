@@ -11,7 +11,7 @@ services:
     ports:
       - "5432:5432"
 
-  database.migration.runner:
+  database-migration-runner:
     image: mcr.microsoft.com/dotnet/sdk:8.0
     environment:
       GITHUB_TOKEN: ${GITHUB_TOKEN}
@@ -29,7 +29,7 @@ services:
     depends_on:
       - database
 
-  host.api:
+  host-api:
     image: host-api
     build:
       context: .
@@ -42,9 +42,9 @@ services:
       - "54323:54323"
       - "54324:54324"
     depends_on:
-      - database.migration.runner
+      - database-migration-runner
 
-  host.worker:
+  host-worker:
     image: host-worker
     build:
       context: .
@@ -54,7 +54,7 @@ services:
     networks:
       - heimdall
     depends_on:
-      - database.migration.runner
+      - database-migration-runner
 
 networks:
   heimdall:
