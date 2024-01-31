@@ -6,7 +6,6 @@ public class IIntegrationEventToAggregateRootConverter(IMapper mapper) : ITypeCo
 
     public IAggregateRoot Convert(IIntegrationEvent source, IAggregateRoot destination, ResolutionContext context)
     {
-        // TODO: Finish mapping integration events
         return source.Type switch
         {
             "external_integration_event_type_identifier" => _mapper.Map<DomainEntity>(source),

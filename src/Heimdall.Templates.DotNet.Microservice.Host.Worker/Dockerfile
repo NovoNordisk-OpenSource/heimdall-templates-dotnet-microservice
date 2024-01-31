@@ -4,6 +4,9 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 # Build arg to hold GITHUB_TOKEN for restoring packages
 ARG GITHUB_TOKEN
 
+# Set environment variables
+ENV GITHUB_TOKEN=$GITHUB_TOKEN
+
 # Copy files to container file system
 COPY ./ ./build/
 
@@ -14,9 +17,6 @@ WORKDIR /build
 RUN apt-get update && apt-get install -y locales && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 RUN dpkg-reconfigure --frontend=noninteractive locales && update-locale LANG=en_US.UTF-8
 RUN wget -qO- https://raw.githubusercontent.com/Microsoft/artifacts-credprovider/master/helpers/installcredprovider.sh | bash
-
-# Set the credential provider variables and run restore.
-RUN sed -i "s|</configuration>|<packageSourceCredentials><github><add key=\"Username\" value=\"USERNAME\" /><add key=\"ClearTextPassword\" value=\"${GITHUB_TOKEN}\" /></github></packageSourceCredentials></configuration>|" nuget.config
 
 # Set workdir to current project folder
 WORKDIR /build/src/Heimdall.Templates.DotNet.Microservice.Host.Worker

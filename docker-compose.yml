@@ -5,30 +5,56 @@ services:
     image: postgres:latest
     networks:
       - heimdall
-    ports:
-      - "5432:5432"
     environment:
       - "POSTGRES_USER=postgres"
       - "POSTGRES_PASSWORD=local"
+    ports:
+      - "5432:5432"
+
+  database.migration.runner:
+    image: mcr.microsoft.com/dotnet/sdk:8.0
+    environment:
+      GITHUB_TOKEN: ${GITHUB_TOKEN}
+    networks:
+      - heimdall
+    volumes:
+      - ./:/app
+    command:
+      - /bin/bash
+      - -c
+      - |
+        export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.dotnet/tools
+        dotnet tool install dotnet-ef -g
+        dotnet ef database update --project ./app/src/Heimdall.Templates.Dotnet.Microservice.Infrastructure/Heimdall.Templates.Dotnet.Microservice.Infrastructure.csproj --context ApplicationContext
+    depends_on:
+      - database
 
   host.api:
     image: host-api
     build:
       context: .
       dockerfile: src/Heimdall.Templates.DotNet.Microservice.Host.Api/Dockerfile
+    environment:
+      GITHUB_TOKEN: ${GITHUB_TOKEN}
     networks:
       - heimdall
     ports:
       - "54323:54323"
       - "54324:54324"
+    depends_on:
+      - database.migration.runner
 
   host.worker:
     image: host-worker
     build:
       context: .
       dockerfile: src/Heimdall.Templates.DotNet.Microservice.Host.Worker/Dockerfile
+    environment:
+      GITHUB_TOKEN: ${GITHUB_TOKEN}
     networks:
       - heimdall
+    depends_on:
+      - database.migration.runner
 
 networks:
   heimdall:

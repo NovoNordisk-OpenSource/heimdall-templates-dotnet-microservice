@@ -1,7 +1,3 @@
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-
 namespace Heimdall.Templates.Dotnet.Microservice.Infrastructure;
 
 public static class DependencyInjection
@@ -40,12 +36,10 @@ public static class DependencyInjection
             var serviceProvider = services.BuildServiceProvider();
             var dbContextOptions = serviceProvider.GetService<IOptions<EntityContextOptions>>();
             var callingAssemblyName = Assembly.GetExecutingAssembly().GetName().Name;
-            var connectionString =
-                dbContextOptions?.Value?.ConnectionStrings?.GetValue<string>(nameof(ApplicationContext));
+            var connectionString = dbContextOptions?.Value?.ConnectionStrings?.GetValue<string>(nameof(ApplicationContext));
 
             if (string.IsNullOrEmpty(connectionString))
-                throw new ApplicationFacadeException(
-                    $"Could not find connection string with entry key: {nameof(ApplicationContext)}");
+                throw new ApplicationFacadeException($"Could not find connection string with entry key: {nameof(ApplicationContext)}");
 
             var dbOptions = options.UseNpgsql(connectionString,
                 sqliteOptions =>

@@ -12,8 +12,7 @@ public sealed class ApplicationContextDesignFactory : IDesignTimeDbContextFactor
     /// <returns>The created application context.</returns>
     public ApplicationContext CreateDbContext(string[] args)
     {
-        var connection =
-            new NpgsqlConnection("User ID=postgres;Password=local;Host=localhost;Port=5432;Database=postgres");
+        var connection = new NpgsqlConnection("User ID=postgres;Password=local;Host=database;Port=5432;Database=postgres");
 
         connection.Open();
 
