@@ -15,6 +15,14 @@ public interface IDomainService : IService
     Task<IEnumerable<DomainEntity>> GetDomainEntitiesAsync(CancellationToken ct = default);
 
     /// <summary>
+    ///     Retrieves domain entity by GUID.
+    /// </summary>
+    /// <param name="entityId">The entity GUID.</param>
+    /// <param name="ct">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the collection of domain entities.</returns>
+    Task<DomainEntity?> GetDomainEntityByIdAsync(Guid entityId, CancellationToken ct = default);
+
+    /// <summary>
     ///     Retrieves domain entities by capability identifier.
     /// </summary>
     /// <param name="capabilityIdentifier">The capability identifier.</param>
@@ -68,7 +76,7 @@ public interface IDomainService : IService
     /// <param name="ct">The cancellation token.</param>
     /// <returns>
     ///     A task that represents the asynchronous operation. The task result contains the added or updated domain
-    ///     object.
+    ///     object.entityId
     /// </returns>
     Task<DomainObject> AddOrUpdateDomainObjectAsync(Guid entityId, string capabilityIdentifier, string label, string value, CancellationToken ct = default);
 

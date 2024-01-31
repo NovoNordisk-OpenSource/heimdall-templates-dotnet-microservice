@@ -8,7 +8,7 @@ namespace Heimdall.Templates.DotNet.Microservice.Domain.Services;
 public sealed class DomainService(IDomainEntityRepository domainEntityRepository) : IDomainService
 {
     private readonly IDomainEntityRepository _domainEntityRepository = domainEntityRepository;
-
+    
     /// <summary>
     ///     Retrieves all domain entities asynchronously.
     /// </summary>
@@ -17,6 +17,17 @@ public sealed class DomainService(IDomainEntityRepository domainEntityRepository
     public async Task<IEnumerable<DomainEntity>> GetDomainEntitiesAsync(CancellationToken ct = default)
     {
         return await _domainEntityRepository.GetAsync(o => true, ct);
+    }
+
+    /// <summary>
+    ///     Retrieves a domain entity by its identifier asynchronously.
+    /// </summary>
+    /// <param name="entityId">The entity identifier.</param>
+    /// <param name="ct">The cancellation token.</param>
+    /// <returns>The domain entity with the specified identifier, or null if not found.</returns>
+    public async Task<DomainEntity?> GetDomainEntityByIdAsync(Guid entityId, CancellationToken ct = default)
+    {
+        return await _domainEntityRepository.GetAsync(entityId, ct);
     }
 
     /// <summary>

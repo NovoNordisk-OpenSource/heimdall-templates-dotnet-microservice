@@ -5,7 +5,7 @@
 /// </summary>
 public class IIntegrationEventToIAggregateRootConverter(IMapper mapper) : ITypeConverter<IIntegrationEvent, IAggregateRoot>
 {
-    public readonly IMapper _mapper = mapper;
+    private readonly IMapper _mapper = mapper;
 
     /// <summary>
     /// Converts the specified integration event to an aggregate root.
