@@ -1,7 +1,14 @@
 ﻿namespace Heimdall.Templates.DotNet.Microservice.Application.Mapping.Converters;
 
-public class AggregateRootToCommandConverter : ITypeConverter<IAggregateRoot, ICommand<IAggregateRoot>>
+public class IAggregateRootToICommandConverter : ITypeConverter<IAggregateRoot, ICommand<IAggregateRoot>>
 {
+    /// <summary>
+    /// Converts an <see cref="IAggregateRoot"/> object to an <see cref="ICommand{IAggregateRoot}"/> object.
+    /// </summary>
+    /// <param name="source">The source <see cref="IAggregateRoot"/> object to convert.</param>
+    /// <param name="destination">The destination <see cref="ICommand{IAggregateRoot}"/> object.</param>
+    /// <param name="context">The resolution context.</param>
+    /// <returns>The converted <see cref="ICommand{IAggregateRoot}"/> object.</returns>
     public ICommand<IAggregateRoot> Convert(IAggregateRoot source, ICommand<IAggregateRoot> destination, ResolutionContext context)
     {
         switch (source)

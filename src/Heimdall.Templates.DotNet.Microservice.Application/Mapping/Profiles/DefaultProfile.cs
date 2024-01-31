@@ -7,10 +7,16 @@ public sealed class DefaultProfile : Profile
 {
     public DefaultProfile()
     {
-        CreateMap<IIntegrationEvent, IAggregateRoot>()
-        .ConvertUsing<IIntegrationEventToAggregateRootConverter>();
-
         CreateMap<IAggregateRoot, ICommand<IAggregateRoot>>()
-        .ConvertUsing<AggregateRootToCommandConverter>();
+        .ConvertUsing<IAggregateRootToICommandConverter>();
+
+        CreateMap<IIntegrationEvent, ICommand<IAggregateRoot>>()
+        .ConvertUsing<IIntegrationEventToICommandConverter>();
+
+        CreateMap<IIntegrationEvent, IAggregateRoot>()
+        .ConvertUsing<IIntegrationEventToIAggregateRootConverter>();
+
+        CreateMap<IIntegrationEvent, DomainEntity>()
+        .ConvertUsing<IIntegrationEventToDomainEntityConverter>();
     }
 }

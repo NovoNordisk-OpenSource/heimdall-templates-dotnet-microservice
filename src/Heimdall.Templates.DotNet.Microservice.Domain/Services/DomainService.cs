@@ -27,8 +27,7 @@ public sealed class DomainService(IDomainEntityRepository domainEntityRepository
     /// <returns>A collection of domain entities.</returns>
     public async Task<IEnumerable<DomainEntity>> GetDomainEntityByCapabilityIdentifierAsync(string capabilityIdentifier, CancellationToken ct = default)
     {
-        return await _domainEntityRepository.GetAsync(
-            r => r.Objects.Any(ci => ci.CapabilityIdentifier == capabilityIdentifier), ct);
+        return await _domainEntityRepository.GetAsync(r => r.Objects.Any(ci => ci.CapabilityIdentifier == capabilityIdentifier), ct);
     }
 
     /// <summary>
@@ -40,8 +39,7 @@ public sealed class DomainService(IDomainEntityRepository domainEntityRepository
     /// <returns>A collection of domain entities.</returns>
     public async Task<IEnumerable<DomainEntity>> GetDomainEntityByDateRangeAsync(DateTime startDate, DateTime? endDate, CancellationToken ct = default)
     {
-        return await _domainEntityRepository.GetAsync(
-            r => r.Created >= startDate && r.Created <= (endDate ?? DateTime.UtcNow), ct);
+        return await _domainEntityRepository.GetAsync(r => r.Created >= startDate && r.Created <= (endDate ?? DateTime.UtcNow), ct);
     }
 
     /// <summary>

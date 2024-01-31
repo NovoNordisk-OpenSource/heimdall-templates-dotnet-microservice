@@ -20,8 +20,7 @@ public class ApplicationContext : EntityContext
     /// <param name="options">The DbContext options.</param>
     /// <param name="mediator">The mediator instance.</param>
     /// <param name="seedData">The seed data for the context.</param>
-    public ApplicationContext(DbContextOptions options, IMediator? mediator = default,
-        IDictionary<Type, IEnumerable<IView>> seedData = default) : base(options)
+    public ApplicationContext(DbContextOptions options, IMediator? mediator = default, IDictionary<Type, IEnumerable<IView>> seedData = default) : base(options)
     {
     }
 #pragma warning restore CS8625

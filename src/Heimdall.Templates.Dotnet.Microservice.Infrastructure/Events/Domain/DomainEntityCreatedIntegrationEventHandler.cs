@@ -5,8 +5,7 @@ namespace Heimdall.Templates.Dotnet.Microservice.Infrastructure.Events.Domain;
 /// </summary>
 public class DomainEntityCreatedIntegrationEventHandler(IProducer<Ignore, IIntegrationEvent> producer) : IEventHandler<DomainEntityCreatedIntegrationEvent>
 {
-    private readonly Counter<int> _eventCounter = Metrics.EventMeter.CreateCounter<int>("event.counter",
-        description: "Counts the number of events processed by the handler");
+    private readonly Counter<int> _eventCounter = Metrics.EventMeter.CreateCounter<int>("event.counter", description: "Counts the number of events processed by the handler");
 
     private readonly IProducer<Ignore, IIntegrationEvent> _producer = producer;
 
@@ -24,8 +23,17 @@ public class DomainEntityCreatedIntegrationEventHandler(IProducer<Ignore, IInteg
         // Increment custom metric
         _eventCounter.Add(1);
 
-        // TODO: Implement and inject admin client to enable dynamic creation of topic if it does not exist @ https://github.com/confluentinc/confluent-kafka-dotnet/blob/b7b04fed82762c67c2841d7481eae59dee3e4e20/examples/AdminClient/Program.cs
-        // Produce message to notication.id topic (one topic for each integration event type)
+        // Create topic if it does not exist
+        using (var adminClient = new DependentAdminClientBuilder(_producer.Handle).Build())
+        {
+            var metaData = adminClient.GetMetadata(TimeSpan.FromSeconds(5));
+            var topicInfo = metaData.Topics.Where(tp => string.Equals(notification.Id, tp.Topic, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+
+            if (topicInfo == null)
+                await adminClient.CreateTopicsAsync([new TopicSpecification { Name = notification.Id, ReplicationFactor = 1, NumPartitions = 1 }]);
+        }
+
+        // Produce message to topic
         await _producer.ProduceAsync(notification.Id, new Message<Ignore, IIntegrationEvent> { Value = notification }, ct);
     }
 }

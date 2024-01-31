@@ -16,8 +16,7 @@ public class DomainController(ILogger<DomainController> logger, IApplicationFaca
 
     private readonly ILogger<DomainController> _logger = logger;
 
-    private readonly Counter<int> _requestCounter = Metrics.RequestMeter.CreateCounter<int>("request.counter",
-        description: "Counts the number of requests serviced by the controller");
+    private readonly Counter<int> _requestCounter = Metrics.RequestMeter.CreateCounter<int>("request.counter", description: "Counts the number of requests serviced by the controller");
 
     /// <summary>
     ///     Gets all domain entities asynchronously.
@@ -28,8 +27,7 @@ public class DomainController(ILogger<DomainController> logger, IApplicationFaca
     public async Task<IEnumerable<DomainEntity>> GetDomainEntitiesAsync(CancellationToken ct = default)
     {
         // Initialize custom activity
-        using var activity = Activities.ApplicationActivitySource.StartActivity(string.Format("{0}.{1}",
-            MethodBase.GetCurrentMethod()!.DeclaringType!.FullName, MethodBase.GetCurrentMethod()!.Name));
+        using var activity = Activities.ApplicationActivitySource.StartActivity(string.Format("{0}.{1}", MethodBase.GetCurrentMethod()!.DeclaringType!.FullName, MethodBase.GetCurrentMethod()!.Name));
 
         // Increment custom metric
         _requestCounter.Add(1);
@@ -47,6 +45,7 @@ public class DomainController(ILogger<DomainController> logger, IApplicationFaca
         // Log the number of entities returned
         _logger.LogDomainEntityReturnCount(entityCount);
 
+        // Return the found entities
         return entities;
     }
 

@@ -19,8 +19,7 @@ public class DomainEntityRepository(ApplicationContext context) : EntityFramewor
     ///     A task that represents the asynchronous operation. The task result contains the collection of
     ///     <see cref="DomainEntity" /> entities.
     /// </returns>
-    public override async Task<IEnumerable<DomainEntity>> GetAsync(Expression<Func<DomainEntity, bool>> filter,
-        CancellationToken ct = default)
+    public override async Task<IEnumerable<DomainEntity>> GetAsync(Expression<Func<DomainEntity, bool>> filter, CancellationToken ct = default)
     {
         return await Task.Factory.StartNew(() =>
         {

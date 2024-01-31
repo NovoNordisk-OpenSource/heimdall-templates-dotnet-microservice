@@ -1,3 +1,4 @@
+// Create application builder
 var builder = WebApplication.CreateBuilder(args);
 
 // Fetch OTLP endpoint from configuration.
@@ -51,6 +52,7 @@ builder.Logging.AddOpenTelemetry(logging =>
     logging.SetResourceBuilder(resourceBuilder).ConfigureLoggerExporter(otlpEndpoint);
 });
 
+// Build host
 var app = builder.Build();
 
 // Add swagger if development mode.

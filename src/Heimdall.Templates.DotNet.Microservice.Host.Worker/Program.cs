@@ -46,7 +46,11 @@ builder.Logging.AddOpenTelemetry(logging =>
     logging.SetResourceBuilder(resourceBuilder).ConfigureLoggerExporter(otlpEndpoint);
 });
 
-// Build host
+// Build application
 var host = builder.Build();
 
+// Log the process id.
+// app.Logger.LogStarting(Process.GetCurrentProcess().Id);
+
+// Start the application.
 host.Run();

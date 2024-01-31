@@ -23,10 +23,10 @@ public sealed class GenericIntegrationEventConsumptionStrategy(IMapper mapper, I
         if (!string.IsNullOrEmpty(payload))
         {
             var @event = JsonSerializer.Deserialize<IntegrationEvent>(payload);
-            var aggregateRoot = _mapper.Map<IAggregateRoot>(@event);
-            var command = _mapper.Map<IAggregateRoot, ICommand<IAggregateRoot>>(aggregateRoot);
+            var command = _mapper.Map<ICommand<IAggregateRoot>>(@event);
 
-            if (command != null) await _applicationFacade.Execute(command, ct);
+            if (command != null) 
+                await _applicationFacade.Execute(command, ct);
         }
     }
 }

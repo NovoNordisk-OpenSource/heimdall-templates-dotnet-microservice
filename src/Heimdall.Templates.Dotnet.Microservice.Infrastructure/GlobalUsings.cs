@@ -1,12 +1,5 @@
 // Global using directives
 
-global using System.Diagnostics.Metrics;
-global using System.Linq.Expressions;
-global using System.Net.Http.Headers;
-global using System.Reflection;
-global using System.Security.Cryptography;
-global using System.Security.Cryptography.X509Certificates;
-global using System.Text.Json;
 global using AutoMapper;
 global using BeHeroes.CodeOps.Abstractions.Aggregates;
 global using BeHeroes.CodeOps.Abstractions.Commands;
@@ -20,6 +13,7 @@ global using BeHeroes.CodeOps.Infrastructure.Kafka;
 global using BeHeroes.CodeOps.Infrastructure.Kafka.Strategies;
 global using BeHeroes.CodeOps.Security.Policies;
 global using Confluent.Kafka;
+global using Confluent.Kafka.Admin;
 global using Heimdall.Templates.DotNet.Microservice.Application;
 global using Heimdall.Templates.DotNet.Microservice.Application.Events.Domain;
 global using Heimdall.Templates.DotNet.Microservice.Application.Telemetry;
@@ -44,3 +38,10 @@ global using Metrics = Heimdall.Templates.DotNet.Microservice.Application.Teleme
 global using OpenTelemetry.Trace;
 global using OpenTelemetry.Metrics;
 global using OpenTelemetry.Logs;
+global using System.Diagnostics.Metrics;
+global using System.Linq.Expressions;
+global using System.Net.Http.Headers;
+global using System.Reflection;
+global using System.Security.Cryptography;
+global using System.Security.Cryptography.X509Certificates;
+global using System.Text.Json;

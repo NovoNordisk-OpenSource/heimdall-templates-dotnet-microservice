@@ -16,8 +16,7 @@ public sealed class ApplicationFacadeException : Exception
     ///     Initializes a new instance of the <see cref="ApplicationFacadeException" /> class with a specified error message.
     /// </summary>
     /// <param name="message">The error message that explains the reason for the exception.</param>
-    public ApplicationFacadeException(string message)
-        : base(message)
+    public ApplicationFacadeException(string message) : base(message)
     {
     }
 
@@ -30,8 +29,7 @@ public sealed class ApplicationFacadeException : Exception
     ///     The exception that is the cause of the current exception, or a null reference if no inner
     ///     exception is specified.
     /// </param>
-    public ApplicationFacadeException(string message, Exception innerException)
-        : base(message, innerException)
+    public ApplicationFacadeException(string message, Exception innerException) : base(message, innerException)
     {
     }
 }

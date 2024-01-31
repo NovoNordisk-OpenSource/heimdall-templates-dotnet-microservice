@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 namespace Heimdall.Templates.DotNet.Microservice.Domain.ValueObjects;
 
 /// <summary>

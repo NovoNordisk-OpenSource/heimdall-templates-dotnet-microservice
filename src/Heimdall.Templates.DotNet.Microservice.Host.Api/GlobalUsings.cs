@@ -1,8 +1,5 @@
 // Global using directives
 
-global using System.Diagnostics;
-global using System.Diagnostics.Metrics;
-global using System.Reflection;
 global using Heimdall.Templates.DotNet.Microservice.Application;
 global using Heimdall.Templates.DotNet.Microservice.Application.Commands.Domain;
 global using Heimdall.Templates.DotNet.Microservice.Application.Telemetry;
@@ -18,3 +15,6 @@ global using OpenTelemetry.Logs;
 global using OpenTelemetry.Metrics;
 global using OpenTelemetry.Resources;
 global using OpenTelemetry.Trace;
+global using System.Diagnostics;
+global using System.Diagnostics.Metrics;
+global using System.Reflection;
