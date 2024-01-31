@@ -8,7 +8,7 @@ public class IIntegrationEventToAggregateRootConverter(IMapper mapper) : ITypeCo
     {
         return source.Type switch
         {
-            "external_update_to_domain_entity" => _mapper.Map<DomainEntity>(source),
+            "externally_mutated_domain_entity" => _mapper.Map<DomainEntity>(source),
             _ => throw new NotSupportedException($"The integration event type {source.Type} is not supported.")
         };
     }

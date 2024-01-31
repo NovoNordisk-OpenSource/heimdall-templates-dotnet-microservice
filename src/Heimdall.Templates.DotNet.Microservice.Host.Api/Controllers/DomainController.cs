@@ -49,4 +49,6 @@ public class DomainController(ILogger<DomainController> logger, IApplicationFaca
 
         return entities;
     }
+
+    //TODO: Implement controller actions for remaning commands
 }
