@@ -4,6 +4,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Fetch OTLP endpoint from configuration.
 var otlpEndpoint = builder.Configuration["OTLP_ENDPOINT_URL"];
 
+// Fetch Microsoft Identity options from configuration.
+var microsoftIdentityOptions = builder.Configuration.GetSection("AzureAd").Get<MicrosoftIdentityOptions>() ?? new MicrosoftIdentityOptions();
+
 // Add required services to the container.
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -28,7 +31,7 @@ builder.Services.AddOpenTelemetry()
                     serviceVersion: Service.Version))
             .AddAspNetCoreInstrumentation()
             .AddHttpClientInstrumentation()
-            .ConfigureTraceExporter(otlpEndpoint);
+            .ConfigureTraceExporter(otlpEndpoint, microsoftIdentityOptions);
     })
     // Configure OpenTelemetry Metrics
     .WithMetrics(builder =>
@@ -37,7 +40,7 @@ builder.Services.AddOpenTelemetry()
             .AddMeter(Metrics.EventMeter.Name)
             .AddMeter("Microsoft.AspNetCore.Hosting")
             .AddMeter("Microsoft.AspNetCore.Server.Kestrel")
-            .ConfigureMeterExporter(otlpEndpoint);
+            .ConfigureMeterExporter(otlpEndpoint, microsoftIdentityOptions);
     });
 
 // Configure OpenTelemetry Logs
@@ -49,7 +52,7 @@ builder.Logging.AddOpenTelemetry(logging =>
         .CreateDefault()
         .AddService(Service.Name);
 
-    logging.SetResourceBuilder(resourceBuilder).ConfigureLoggerExporter(otlpEndpoint);
+    logging.SetResourceBuilder(resourceBuilder).ConfigureLoggerExporter(otlpEndpoint, microsoftIdentityOptions);
 });
 
 // Build application

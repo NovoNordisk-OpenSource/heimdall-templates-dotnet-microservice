@@ -24,19 +24,13 @@ public class AuthorizationHeaderHandler(HttpMessageHandler innerHandler, Microso
 
     private string? GetAccessToken(string tokenType)
     {
-        string scope;
-
-        switch (tokenType)
+        //TODO: OTLP_CLIENT_ID is not set in the environment variables. It should be read from the configuration system. This is a temporary workaround.
+        //TODO: Do we really need this scope or was this only for SystemAssignedIdentityWithCertificate?
+        var scope = tokenType switch
         {
-            case Constants.Bearer:
-                //TODO: Do we really need this scope or was this only for SystemAssignedIdentityWithCertificate?
-                scope = Environment.GetEnvironmentVariable("OTLP_CLIENT_ID") ?? throw new ArgumentNullException($"OTLP_CLIENT_ID is null.");
-
-                break;
-
-            default:
-                throw new ArgumentOutOfRangeException(nameof(tokenType), tokenType, null);
-        }
+            Constants.Bearer => Environment.GetEnvironmentVariable("OTLP_CLIENT_ID") ?? throw new ArgumentNullException($"OTLP_CLIENT_ID is null."),
+            _ => throw new ArgumentOutOfRangeException(nameof(tokenType), tokenType, null),
+        };
 
         var authenticationResult = tokenType switch
         {
@@ -72,11 +66,6 @@ public class AuthorizationHeaderHandler(HttpMessageHandler innerHandler, Microso
 
     private static async Task<AuthenticationResult?> GetAuthenticationResultAsync(MicrosoftIdentityOptions identityOptions, AuthorizationOptions options, string scope)
     {
-        var clientId = identityOptions.ClientId;
-        var clientSecret = identityOptions.ClientSecret;
-        var tenantId = identityOptions.TenantId;
-        var uamiClientId = identityOptions.UserAssignedManagedIdentityClientId;
-
         IConfidentialClientApplication confidentialClientApplication;
         IManagedIdentityApplication managedIdApplication;
         AuthenticationResult? authenticationResult;
@@ -84,20 +73,20 @@ public class AuthorizationHeaderHandler(HttpMessageHandler innerHandler, Microso
         switch (options)
         {
             case AuthorizationOptions.ServicePrincipal:
-                if (clientId == null || clientSecret == null || tenantId == null)
+                if (identityOptions.ClientId == null || identityOptions.ClientSecret == null || identityOptions.TenantId == null)
                     throw new ArgumentNullException(
                         $"Identity options {identityOptions.ClientId}, {identityOptions.ClientSecret}, or {identityOptions.TenantId} is null."
                     );
 
                 confidentialClientApplication = ConfidentialClientApplicationBuilder
-                    .Create(clientId)
-                    .WithClientSecret(clientSecret)
-                    .WithAuthority($"https://login.microsoftonline.com/{tenantId}")
+                    .Create(identityOptions.ClientId)
+                    .WithClientSecret(identityOptions.ClientSecret)
+                    .WithAuthority($"https://login.microsoftonline.com/{identityOptions.TenantId}")
                     .WithExperimentalFeatures()
                     .Build();
 
                 authenticationResult = await confidentialClientApplication
-                    .AcquireTokenForClient(new[] { $"{scope}/.default" })
+                    .AcquireTokenForClient([$"{scope}/.default"])
                     .ExecuteAsync()
                     .ConfigureAwait(false);
 
@@ -118,13 +107,13 @@ public class AuthorizationHeaderHandler(HttpMessageHandler innerHandler, Microso
                 break;
 
             case AuthorizationOptions.UserAssignedIdentity:
-                if (uamiClientId == null)
+                if (identityOptions.UserAssignedManagedIdentityClientId == null)
                     throw new ArgumentNullException(
                         $"Identity option {identityOptions.UserAssignedManagedIdentityClientId} is null."
                     );
 
                 managedIdApplication = ManagedIdentityApplicationBuilder
-                    .Create(ManagedIdentityId.WithUserAssignedResourceId(uamiClientId))
+                    .Create(ManagedIdentityId.WithUserAssignedResourceId(identityOptions.UserAssignedManagedIdentityClientId))
                     // Azure Container Apps does not work without this
                     .WithExperimentalFeatures()
                     .Build();
