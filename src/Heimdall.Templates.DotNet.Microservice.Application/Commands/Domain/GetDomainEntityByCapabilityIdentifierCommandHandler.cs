@@ -13,8 +13,7 @@ public sealed class GetDomainEntityByCapabilityIdentifierCommandHandler(IDomainS
     /// <param name="command">The command containing the capability identifier.</param>
     /// <param name="ct">The cancellation token.</param>
     /// <returns>A collection of domain entities.</returns>
-    public async Task<IEnumerable<DomainEntity>> Handle(GetDomainEntityByCapabilityIdentifierCommand command,
-        CancellationToken ct = default)
+    public async Task<IEnumerable<DomainEntity>> Handle(GetDomainEntityByCapabilityIdentifierCommand command, CancellationToken ct = default)
     {
         return await _domainService.GetDomainEntityByCapabilityIdentifierAsync(command.CapabilityIdentifier, ct);
     }

@@ -23,14 +23,12 @@ public sealed class CreateDomainEntityCommandHandler(IDomainService domainServic
         return await _domainService.AddDomainEntityAsync(command.Objects, ct);
     }
 
-    async Task<IAggregateRoot> IRequestHandler<CreateDomainEntityCommand, IAggregateRoot>.Handle(
-        CreateDomainEntityCommand request, CancellationToken ct)
+    async Task<IAggregateRoot> IRequestHandler<CreateDomainEntityCommand, IAggregateRoot>.Handle(CreateDomainEntityCommand request, CancellationToken ct)
     {
         return await Handle(request, ct);
     }
 
-    async Task<IAggregateRoot> ICommandHandler<CreateDomainEntityCommand, IAggregateRoot>.Handle(
-        CreateDomainEntityCommand request, CancellationToken ct)
+    async Task<IAggregateRoot> ICommandHandler<CreateDomainEntityCommand, IAggregateRoot>.Handle(CreateDomainEntityCommand request, CancellationToken ct)
     {
         return await Handle(request, ct);
     }

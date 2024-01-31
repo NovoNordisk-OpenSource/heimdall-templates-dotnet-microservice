@@ -10,7 +10,6 @@ namespace Heimdall.Templates.DotNet.Microservice.Application.Commands.Domain;
 [method: JsonConstructor]
 public sealed class GetDomainEntityByCapabilityIdentifierCommand(string capabilityIdentifier) : ICommand<IEnumerable<DomainEntity>>
 {
-
     /// <summary>
     ///     Gets or sets the capability identifier.
     /// </summary>

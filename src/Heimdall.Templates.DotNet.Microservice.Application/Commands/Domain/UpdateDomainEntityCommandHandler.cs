@@ -23,14 +23,12 @@ public sealed class UpdateDomainEntityCommandHandler(IDomainService domainServic
         return await _domainService.UpdateDomainEntityAsync(command.Entity, ct);
     }
 
-    async Task<IAggregateRoot> IRequestHandler<UpdateDomainEntityCommand, IAggregateRoot>.Handle(
-        UpdateDomainEntityCommand request, CancellationToken ct)
+    async Task<IAggregateRoot> IRequestHandler<UpdateDomainEntityCommand, IAggregateRoot>.Handle(UpdateDomainEntityCommand request, CancellationToken ct)
     {
         return await Handle(request, ct);
     }
 
-    async Task<IAggregateRoot> ICommandHandler<UpdateDomainEntityCommand, IAggregateRoot>.Handle(
-        UpdateDomainEntityCommand request, CancellationToken ct)
+    async Task<IAggregateRoot> ICommandHandler<UpdateDomainEntityCommand, IAggregateRoot>.Handle(UpdateDomainEntityCommand request, CancellationToken ct)
     {
         return await Handle(request, ct);
     }

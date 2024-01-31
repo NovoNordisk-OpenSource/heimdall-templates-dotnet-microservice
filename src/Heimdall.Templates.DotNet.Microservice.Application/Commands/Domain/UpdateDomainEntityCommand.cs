@@ -9,5 +9,6 @@ namespace Heimdall.Templates.DotNet.Microservice.Application.Commands.Domain;
 /// </summary>
 public sealed class UpdateDomainEntityCommand(DomainEntity entity) : ICommand<DomainEntity>
 {
-    [JsonPropertyName("entity")] public DomainEntity Entity { get; init; } = entity;
+    [JsonPropertyName("entity")] 
+    public DomainEntity Entity { get; init; } = entity;
 }

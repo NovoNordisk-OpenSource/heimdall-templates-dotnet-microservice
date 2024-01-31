@@ -14,8 +14,7 @@ public sealed class GetDomainEntityByDateRangeCommandHandler(IDomainService doma
     /// <param name="command">The GetDomainEntityByDateRangeCommand containing the start and end dates.</param>
     /// <param name="ct">The cancellation token.</param>
     /// <returns>A collection of domain entities within the specified date range.</returns>
-    public async Task<IEnumerable<DomainEntity>> Handle(GetDomainEntityByDateRangeCommand command,
-        CancellationToken ct = default)
+    public async Task<IEnumerable<DomainEntity>> Handle(GetDomainEntityByDateRangeCommand command, CancellationToken ct = default)
     {
         return await _domainService.GetDomainEntityByDateRangeAsync(command.StartDate, command.EndDate, ct);
     }
