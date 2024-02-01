@@ -1,0 +1,9 @@
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: heimdall-templates-dotnet-microservice
+  title: Heimdall dotnet microservice template
+  description: This is a system for template in Heimdall for .NET microservice
+spec:
+  domain: templates-microservice
+  owner: devx-maintainers
