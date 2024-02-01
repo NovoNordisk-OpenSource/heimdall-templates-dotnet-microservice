@@ -15,4 +15,9 @@ metadata:
     backstage.io/techdocs-ref: dir:.
 spec:
   targets:
+    - ./entities/apis.yaml 
+    - ./entities/components.yaml 
     - ./entities/domains.yaml 
+    - ./entities/groups.yaml 
+    - ./entities/systems.yaml 
+    - ./entities/users.yaml 
