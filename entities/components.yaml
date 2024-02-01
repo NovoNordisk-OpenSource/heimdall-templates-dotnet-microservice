@@ -14,7 +14,7 @@ spec:
   owner: devx-maintainers
   system: heimdall-templates-dotnet-microservice
   dependsOn:
-    - heimdall-templates-dotnet-microservice-domain
+    - component:heimdall-templates-dotnet-microservice-domain
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
@@ -48,7 +48,7 @@ spec:
   owner: devx-maintainers
   system: heimdall-templates-dotnet-microservice
   dependsOn:
-    - heimdall-templates-dotnet-microservice-infrastructure
+    - component:heimdall-templates-dotnet-microservice-infrastructure
   providesApis:
     - heimdall-templates-dotnet-microservice-api
 ---
@@ -69,7 +69,7 @@ spec:
   owner: devx-maintainers
   system: heimdall-templates-dotnet-microservice
   dependsOn:
-    - heimdall-templates-dotnet-microservice-infrastructure
+    - component:heimdall-templates-dotnet-microservice-infrastructure
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
@@ -87,4 +87,4 @@ spec:
   owner: devx-maintainers
   system: heimdall-templates-dotnet-microservice
   dependsOn:
-    - heimdall-templates-dotnet-microservice-application
+    - component:heimdall-templates-dotnet-microservice-application
