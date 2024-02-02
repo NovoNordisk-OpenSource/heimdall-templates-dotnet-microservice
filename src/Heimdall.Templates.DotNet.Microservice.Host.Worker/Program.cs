@@ -49,6 +49,9 @@ builder.Logging.AddOpenTelemetry(logging =>
     logging.SetResourceBuilder(resourceBuilder).ConfigureLoggerExporter(microsoftIdentityOptions, otlpExporterOptions);
 });
 
+// Add user secrets configuration handler
+builder.Configuration.AddUserSecrets<Program>();
+
 // Build application
 var app = builder.Build();
 
