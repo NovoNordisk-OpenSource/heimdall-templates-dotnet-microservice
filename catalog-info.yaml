@@ -1,0 +1,23 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: heimdall-template-dotnet-microservice
+  title: Heimdall template for .NET microservice
+  description: |
+    This is a location for all entities created with template for .NET microservice in Heimdall
+  tags:
+    - heimdall
+    - template
+    - dotnet
+    - microservice
+    - onion-architecture
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+spec:
+  targets:
+    - ./entities/apis.yaml 
+    - ./entities/components.yaml 
+    - ./entities/domains.yaml 
+    - ./entities/groups.yaml 
+    - ./entities/systems.yaml 
+    - ./entities/users.yaml 

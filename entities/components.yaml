@@ -1,0 +1,90 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: heimdall-templates-dotnet-microservice-application
+  title: Heimdall dotnet microservice template application
+  description: This is a application layer for .NET microservice
+  tags:
+    - dotnet
+    - application
+    - microservice
+spec:
+  type: library
+  lifecycle: production
+  owner: devx-maintainers
+  system: heimdall-templates-dotnet-microservice
+  dependsOn:
+    - component:heimdall-templates-dotnet-microservice-domain
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: heimdall-templates-dotnet-microservice-domain
+  title: Heimdall dotnet microservice template domain
+  description: This is a domain layer for .NET microservice
+  tags:
+    - dotnet
+    - domain
+    - microservice
+spec:
+  type: library
+  lifecycle: production
+  owner: devx-maintainers
+  system: heimdall-templates-dotnet-microservice
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: heimdall-templates-dotnet-microservice-api
+  title: Heimdall dotnet microservice template api
+  description: This is a application layer for .NET microservice
+  tags:
+    - dotnet
+    - api
+    - microservice
+spec:
+  type: service
+  lifecycle: production
+  owner: devx-maintainers
+  system: heimdall-templates-dotnet-microservice
+  dependsOn:
+    - component:heimdall-templates-dotnet-microservice-infrastructure
+  providesApis:
+    - heimdall-templates-dotnet-microservice-api
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: heimdall-templates-dotnet-microservice-worker
+  title: Heimdall dotnet microservice template worker
+  description: This is a application layer for .NET microservice
+  tags:
+    - dotnet
+    - background-service
+    - worker
+    - microservice
+spec:
+  type: service
+  lifecycle: production
+  owner: devx-maintainers
+  system: heimdall-templates-dotnet-microservice
+  dependsOn:
+    - component:heimdall-templates-dotnet-microservice-infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: heimdall-templates-dotnet-microservice-infrastructure
+  title: Heimdall dotnet microservice template infrastructure
+  description: This is a application layer for .NET microservice
+  tags:
+    - dotnet
+    - infrastructure
+    - microservice
+spec:
+  type: library
+  lifecycle: production
+  owner: devx-maintainers
+  system: heimdall-templates-dotnet-microservice
+  dependsOn:
+    - component:heimdall-templates-dotnet-microservice-application

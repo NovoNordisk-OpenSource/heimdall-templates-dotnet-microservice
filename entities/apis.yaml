@@ -1,0 +1,19 @@
+
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: heimdall-templates-dotnet-microservice-api
+  title: Heimdall dotnet microservice template api
+  description: Retrievs API data for consumer
+  tags:
+    - dotnet
+    - rest
+    - asp
+    - swagger
+    - microservice
+spec:
+  type: openapi
+  lifecycle: production
+  owner: devx-maintainers
+  system: heimdall-templates-dotnet-microservice
+  definition: /swagger/v1/swagger.json
