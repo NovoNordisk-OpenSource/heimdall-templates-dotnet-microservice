@@ -1,15 +1,14 @@
-
 apiVersion: backstage.io/v1alpha1
 kind: API
 metadata:
-  name: heimdall-templates-dotnet-microservice-api
-  title: Heimdall dotnet microservice template api
+  name: heimdall-templates-dotnet-microservice-host-api
+  title: Heimdall dotnet microservice template api host
   description: Retrievs API data for consumer
   tags:
     - dotnet
     - rest
-    - asp
-    - swagger
+    - aspnetcore
+    - openapi
     - microservice
 spec:
   type: openapi
@@ -17,3 +16,20 @@ spec:
   owner: devx-maintainers
   system: heimdall-templates-dotnet-microservice
   definition: /swagger/v1/swagger.json
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: heimdall-templates-dotnet-microservice-host-worker
+  title: Heimdall dotnet microservice template event consumer worker host
+  description: Retrievs integration events from Kafka topics
+  tags:
+    - dotnet
+    - kafka
+    - asyncapi
+    - microservice
+spec:
+  type: asyncapi
+  lifecycle: production
+  owner: devx-maintainers
+  system: heimdall-templates-dotnet-microservice
