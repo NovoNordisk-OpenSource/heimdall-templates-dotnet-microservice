@@ -29,7 +29,7 @@ metadata:
     - asyncapi
     - microservice
 spec:
-  type: asyncapi
+  type: openapi
   lifecycle: production
   owner: devx-maintainers
   system: heimdall-templates-dotnet-microservice
