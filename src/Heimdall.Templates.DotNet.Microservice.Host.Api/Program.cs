@@ -69,6 +69,17 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+// Use AzureKeyVault in production if KeyVaultName is set. 
+if (builder.Environment.IsProduction() && !string.IsNullOrEmpty(builder.Configuration["KeyVaultName"]) && builder.Configuration["KeyVaultName"] != "[Enter_the_KeyVault_Name_Here]")
+{
+    builder.Configuration.AddAzureKeyVault(
+        new Uri($"https://{builder.Configuration["KeyVaultName"]}.vault.azure.net/"),
+        new DefaultAzureCredential(new DefaultAzureCredentialOptions
+    {
+        ManagedIdentityClientId = microsoftIdentityOptions.UserAssignedManagedIdentityClientId
+    }));
+}
+
 // Add readiness health check to check EF Core DbContext is connected.
 app.MapHealthChecks("/healthz/readiness", new HealthCheckOptions
 {

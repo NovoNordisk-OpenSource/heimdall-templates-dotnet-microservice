@@ -17,3 +17,4 @@ global using OpenTelemetry.Resources;
 global using OpenTelemetry.Trace;
 global using System.Diagnostics.Metrics;
 global using System.Reflection;
+global using Azure.Identity;
