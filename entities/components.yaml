@@ -50,7 +50,7 @@ spec:
   dependsOn:
     - component:heimdall-templates-dotnet-microservice-infrastructure
   providesApis:
-    - heimdall-templates-dotnet-microservice-api
+    - heimdall-templates-dotnet-microservice-host-api
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component

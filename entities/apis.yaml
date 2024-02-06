@@ -33,3 +33,4 @@ spec:
   lifecycle: production
   owner: devx-maintainers
   system: heimdall-templates-dotnet-microservice
+  definition: /swagger/v1/swagger.json
