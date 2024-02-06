@@ -10,6 +10,8 @@ metadata:
     - aspnetcore
     - openapi
     - microservice
+  annotations:
+    backstage.io/techdocs-ref: dir: ../.
 spec:
   type: openapi
   lifecycle: production
@@ -28,6 +30,8 @@ metadata:
     - kafka
     - asyncapi
     - microservice
+  annotations:
+    backstage.io/techdocs-ref: dir: ../.
 spec:
   type: openapi
   lifecycle: production

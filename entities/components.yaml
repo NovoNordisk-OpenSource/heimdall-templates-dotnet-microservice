@@ -8,6 +8,8 @@ metadata:
     - dotnet
     - application
     - microservice
+  annotations:
+    backstage.io/techdocs-ref: dir: ../.
 spec:
   type: library
   lifecycle: production
@@ -26,6 +28,8 @@ metadata:
     - dotnet
     - domain
     - microservice
+  annotations:
+    backstage.io/techdocs-ref: dir: ../.
 spec:
   type: library
   lifecycle: production
@@ -42,6 +46,8 @@ metadata:
     - dotnet
     - api
     - microservice
+  annotations:
+    backstage.io/techdocs-ref: dir: ../.
 spec:
   type: service
   lifecycle: production
@@ -63,6 +69,8 @@ metadata:
     - background-service
     - worker
     - microservice
+  annotations:
+    backstage.io/techdocs-ref: dir: ../.
 spec:
   type: service
   lifecycle: production
@@ -81,6 +89,8 @@ metadata:
     - dotnet
     - infrastructure
     - microservice
+  annotations:
+    backstage.io/techdocs-ref: dir: ../.
 spec:
   type: library
   lifecycle: production

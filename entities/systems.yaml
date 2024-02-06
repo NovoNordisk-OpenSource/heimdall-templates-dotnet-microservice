@@ -8,6 +8,8 @@ metadata:
     - dotnet
     - template
     - microservice
+  annotations:
+    backstage.io/techdocs-ref: dir: ../.
 spec:
   domain: templates-microservice
   owner: devx-maintainers
