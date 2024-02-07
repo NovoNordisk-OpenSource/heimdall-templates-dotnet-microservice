@@ -9,7 +9,7 @@ metadata:
     - template
     - microservice
   annotations:
-    backstage.io/techdocs-ref: dir: ../.
+    backstage.io/techdocs-ref: dir:../.
 spec:
   domain: templates-microservice
   owner: devx-maintainers

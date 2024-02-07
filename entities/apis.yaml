@@ -11,7 +11,7 @@ metadata:
     - openapi
     - microservice
   annotations:
-    backstage.io/techdocs-ref: dir: ../.
+    backstage.io/techdocs-ref: dir:../.
 spec:
   type: openapi
   lifecycle: production
@@ -31,7 +31,7 @@ metadata:
     - asyncapi
     - microservice
   annotations:
-    backstage.io/techdocs-ref: dir: ../.
+    backstage.io/techdocs-ref: dir:../.
 spec:
   type: openapi
   lifecycle: production
