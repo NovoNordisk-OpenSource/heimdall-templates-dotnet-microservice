@@ -9,7 +9,7 @@ metadata:
     - application
     - microservice
   annotations:
-    backstage.io/techdocs-ref: dir:../.
+    backstage.io/techdocs-entity: location:default/heimdall-template-dotnet-microservice
 spec:
   type: library
   lifecycle: production
@@ -29,7 +29,7 @@ metadata:
     - domain
     - microservice
   annotations:
-    backstage.io/techdocs-ref: dir:../.
+    backstage.io/techdocs-entity: location:default/heimdall-template-dotnet-microservice
 spec:
   type: library
   lifecycle: production
@@ -47,7 +47,7 @@ metadata:
     - api
     - microservice
   annotations:
-    backstage.io/techdocs-ref: dir:../.
+    backstage.io/techdocs-entity: location:default/heimdall-template-dotnet-microservice
 spec:
   type: service
   lifecycle: production
@@ -70,7 +70,7 @@ metadata:
     - worker
     - microservice
   annotations:
-    backstage.io/techdocs-ref: dir:../.
+    backstage.io/techdocs-entity: location:default/heimdall-template-dotnet-microservice
 spec:
   type: service
   lifecycle: production
@@ -90,7 +90,7 @@ metadata:
     - infrastructure
     - microservice
   annotations:
-    backstage.io/techdocs-ref: dir:../.
+    backstage.io/techdocs-entity: location:default/heimdall-template-dotnet-microservice
 spec:
   type: library
   lifecycle: production
