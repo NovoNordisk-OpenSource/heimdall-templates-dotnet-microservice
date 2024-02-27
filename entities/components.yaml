@@ -8,6 +8,8 @@ metadata:
     - dotnet
     - application
     - microservice
+  annotations:
+    backstage.io/techdocs-entity: location:default/heimdall-template-dotnet-microservice
 spec:
   type: library
   lifecycle: production
@@ -26,6 +28,8 @@ metadata:
     - dotnet
     - domain
     - microservice
+  annotations:
+    backstage.io/techdocs-entity: location:default/heimdall-template-dotnet-microservice
 spec:
   type: library
   lifecycle: production
@@ -42,6 +46,8 @@ metadata:
     - dotnet
     - api
     - microservice
+  annotations:
+    backstage.io/techdocs-entity: location:default/heimdall-template-dotnet-microservice
 spec:
   type: service
   lifecycle: production
@@ -50,7 +56,7 @@ spec:
   dependsOn:
     - component:heimdall-templates-dotnet-microservice-infrastructure
   providesApis:
-    - heimdall-templates-dotnet-microservice-api
+    - heimdall-templates-dotnet-microservice-host-api
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
@@ -63,6 +69,8 @@ metadata:
     - background-service
     - worker
     - microservice
+  annotations:
+    backstage.io/techdocs-entity: location:default/heimdall-template-dotnet-microservice
 spec:
   type: service
   lifecycle: production
@@ -81,6 +89,8 @@ metadata:
     - dotnet
     - infrastructure
     - microservice
+  annotations:
+    backstage.io/techdocs-entity: location:default/heimdall-template-dotnet-microservice
 spec:
   type: library
   lifecycle: production

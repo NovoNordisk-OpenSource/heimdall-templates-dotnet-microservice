@@ -10,6 +10,8 @@ metadata:
     - aspnetcore
     - openapi
     - microservice
+  annotations:
+    backstage.io/techdocs-entity: location:default/heimdall-template-dotnet-microservice
 spec:
   type: openapi
   lifecycle: production
@@ -28,8 +30,11 @@ metadata:
     - kafka
     - asyncapi
     - microservice
+  annotations:
+    backstage.io/techdocs-entity: location:default/heimdall-template-dotnet-microservice
 spec:
   type: openapi
   lifecycle: production
   owner: devx-maintainers
   system: heimdall-templates-dotnet-microservice
+  definition: /swagger/v1/swagger.json
