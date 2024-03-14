@@ -34,6 +34,8 @@ services:
   # Auxiliary services
   database:
     image: postgres:latest
+    container_name: database
+    hostname: database
     networks:
       - heimdall
     environment:

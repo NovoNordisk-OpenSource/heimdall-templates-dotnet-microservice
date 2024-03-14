@@ -16,7 +16,7 @@ public sealed class ApplicationContextDesignFactory : IDesignTimeDbContextFactor
 
         connection.Open();
 
-        var optionsBuilder = new DbContextOptionsBuilder<EntityContext>()
+        var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>()
             .UseNpgsql(connection);
 
         return new ApplicationContext(optionsBuilder.Options);
