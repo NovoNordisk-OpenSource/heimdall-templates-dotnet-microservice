@@ -8,6 +8,8 @@ metadata:
     - dotnet
     - template
     - microservice
+  annotations:
+    backstage.io/techdocs-entity: location:default/heimdall-template-dotnet-microservice
 spec:
   domain: templates-microservice
   owner: devx-maintainers
