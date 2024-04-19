@@ -52,7 +52,7 @@ public class AuthorizationHeaderHandler(HttpMessageHandler innerHandler, Microso
 
         if (authenticationResult == null)
         {
-            return "NoAuthNDemo";
+            return "TokenAcquisitionFailed";
         }
 
         _bearerTelemetryAuthenticationResult = tokenType switch
